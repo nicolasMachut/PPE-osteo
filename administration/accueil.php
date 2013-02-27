@@ -1,0 +1,267 @@
+<?php
+//git remote add origin https://github.com/nicolasMachut/administration.git
+//git push -u origin master
+//http://youtu.be/p0EzL9E-2UY?t=2m16s
+define('ABSPATH', dirname(__FILE__).'/');
+
+require(ABSPATH."inc/config.php");
+require_once(ABSPATH.'inc/db.php');
+require_once(ABSPATH.'inc/functions.php');
+require_once(ABSPATH.'inc/checklogin.php');
+
+$obj_db->db_connect1();
+
+include(ABSPATH."inc/generateDate.php");
+if(isset($_GET["title"]) && issetAndNotEmpty($_GET["lastName"]) && issetAndNotEmpty($_GET["firstName"]) && issetAndNotEmpty($_GET["postalCode"])) {
+  $title=mysql_real_escape_string($_GET["title"]);
+  $lastName=mysql_real_escape_string($_GET["lastName"]);
+  $firstName=mysql_real_escape_string($_GET["firstName"]);
+  $postalCode=mysql_real_escape_string($_GET["postalCode"]);
+   switch($title) {
+    case "Mr." :
+      $title=1;
+      break;
+    case "Mme." :
+      $title=2;
+      break;
+    case "Mlle." :
+      $title=3;
+      break;
+  }
+  $client=clientExist($lastName, $firstName, $postalCode);
+  if($client && count($client)<2)
+    editCrenau($client[0]["cli_id"], $_GET["crenauId"]);
+  else {
+    insertClient($lastName, $firstName, $postalCode);
+    $client=clientExist($lastName, $firstName, $postalCode);
+    editCrenau($client[0]["cli_id"], $_GET["crenauId"]);
+  }
+}
+$active_pra = "lA_btn";
+if(isset($_GET["ap"]))
+  $active_pra = $_GET["ap"];
+if(isset($_GET["d"]) AND $_GET["d"]>=0) {// si la date est valable
+    $d=htmlentities($_GET["d"]);
+    if($d>=50) { // bloquer grande date depassant celle de la base de donnŽe
+        $err_d=1;
+        $d=49;
+    }
+}
+else // dans tout les autres cas, si d est negatif
+  $d=0;
+  
+$dateBeginWeek=strtotime("+".$d." week", strtotime('monday this week'));
+$dateEndWeek=strtotime('sunday this week', $dateBeginWeek);
+
+?>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+<?php
+    include("views/head.php");
+?>
+  </head>
+  <body>
+<?php
+    include("views/header.php");
+?>
+    <div id="container">
+<?php
+    if(isset($err_d)) { // si une erreur sur la date est detectŽe, afficher bandeau erreur
+?>
+        <div class="alert alert-error">  
+            <a class="close" data-dismiss="alert">x</a>  
+            <strong>Erreur!</strong> Impossible de prendre des rendez-vous plus loin
+        </div>
+<?php
+    }
+?>
+        <h2 class="week-title">
+          <a href="?d=<?php echo $d-1; ?>&ap=<?php echo $active_pra ?>" id="weekless" class="nav-date"> < </a>
+          Semaine du <?php echo date("d/m/y", $dateBeginWeek) ?> au <?php echo date("d/m/y", $dateEndWeek) ?>
+          <a href="?d=<?php echo $d+1; ?>&ap=<?php echo $active_pra ?>" id="weekmore" class="nav-date"> > </a>
+        </h2>
+        
+        <div class="tabbable tabs-left">
+            <ul class="nav nav-pills" id="sort-date">
+                <li onclick="changeClassLi(this)"><a href="#">Par jour</a></li>
+                <li class="active" onclick="changeClassLi(this)"><a href="#">Par semaine</a></li>
+                <li onclick="changeClassLi(this)"><a href="#">Par mois</a></li>
+                <a href="rdvinfo.php?id=7749">blhblah</a>
+            </ul>
+            <ul class="nav nav-tabs">
+<?php           $cabinet=$_SESSION["cab"];
+                include(ABSPATH."praticiensTabs.php"); ?>
+            </ul>
+            <!--DIV-->
+<?php
+            //createTabsPraticiens($_GET["c"]);
+            //$cabinet=$_GET["c"];
+            include(ABSPATH."praticienPlanning.php");
+
+?>
+        </div> <!-- /tabble -->
+        <!-- Modal -->
+        <div id="rdvModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+                <h3 id="myModalLabel">Prise de rendez-vous</h3>
+            </div>
+                <form class="form-horizontal form-search" method="get" action="accueil.php?"> <!-- formulaire d'inscription de nouveau client -->
+                    <div class="modal-body">
+                      <!--<div class="control-group">
+                        <div class="input-append">
+                          <input type="text" class="span2 search-query" placeholder="Rechercher client...">
+                          <button type="submit" class="btn">Search</button>
+                        </div>
+                      </div>-->
+                        <div class="control-group">
+                            <label class="control-label" for="inputTitle">Civilite :</label>
+                            <div class="controls">
+                                <select id="inputTitle" name="title">
+                                    <option value="0">Choisissez</option>
+                                    <option id="gender_5" value="5">Mr.</option>
+                                    <option id="gender_6" value="6">Mme.</option>
+                                    <option id="gender_7" value="7">Mlle.</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label" for="lastName">Nom :</label>
+                            <div class="controls">
+                                <input type="text" id="inputLastName" name="lastName" placeholder="Nom">
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label" for="firstName">Prenom :</label>
+                            <div class="controls">
+                                <input type="text" id="inputFirstName" name="firstName" placeholder="Prenom">
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label" for="postalCode">Code Postal :</label>
+                            <div class="controls">
+                                <input type="text" id="inputPostalCode" name="postalCode" placeholder="Code Postal">
+                            </div>
+                        </div>
+                </div>
+                <div class="modal-footer">
+                    <input type="hidden" value="null" id="crenauId" name="crenauId"/>
+                    <input type="hidden" value="<?php echo $cabinet;?>" name="c"/>
+                    <button class="btn" data-dismiss="modal" aria-hidden="true">Annuler</button>
+                    <button class="btn btn-primary" type="submit">Confirmer</button>
+                </div>
+            </form>
+        </div> <!-- /modal rdv -->
+        <div id="rdvInfoModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+          <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+              <h3 id="myModalLabel">Informations sur le rendez-vous</h3>
+          </div>
+          <div class="modal-body">
+            <p id="rdvInfoLastName">Nom : </p>
+            <p id="rdvInfoFirstName">Prenom : </p>
+            <p id="rdvInfoPraticienName">Praticien : </p>
+            <p id="rdvInfoSubject">Motif : </p>
+            <p id="rdvInfoDate">Le </p>
+            <p id="rdvInfoHour">à </p>
+          </div>
+          <div class="modal-footer">
+            <button id="absentRdvClient_btn" class="btn btn-warning" data-dismiss="modal" aria-hidden="true">Absent</button>
+            <button id="cancelRdv_btn" class="btn btn-danger" data-dismiss="modal" aria-hidden="true">Annuler</button>
+            <button id="arrivalClient_btn" class="btn btn-primary" data-dismiss="modal" aria-hidden="true">Arrivé</button>
+            <button class="btn" data-dismiss="modal" aria-hidden="true">Fermer</button>
+          </div>
+        </div> <!-- /modal rdv info -->
+    </div> <!-- /le container -->   
+
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.1/themes/base/jquery-ui.css" />
+    <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+    <script src="http://code.jquery.com/ui/1.10.1/jquery-ui.js"></script>
+    <script src="assets/js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+        function getCrenauId(crenau) { // prend l'id de chaque crenau et le renvoi a PHP
+          var crenauId = crenau.id;
+          document.getElementById("crenauId").value = crenauId;
+        }
+        
+        for(var i=1; i<=<?php echo countPraticiens($cabinet); ?>; i++) { // change les cellules de chaque praticien
+            changeClassEmptyCell(i);
+        }
+    
+        function changeClassEmptyCell(i) { // Pour colorer les cases vides en vert, et les rendre cliquable
+            var planning_cells=document.getElementById("planning"+i).getElementsByTagName("td"); // charge le planning du praticien
+            for(var cell in planning_cells) {
+                if(planning_cells[cell].innerText=="") {
+                    $(planning_cells[cell]).attr("class","empty-cell");
+                    $(planning_cells[cell]).attr("data-toggle", "modal");
+                    $(planning_cells[cell]).attr("data-target", "#rdvModal");
+                } else {
+                    $(planning_cells[cell]).attr("class","rdv");
+                    $(planning_cells[cell]).attr("data-toggle", "modal");
+                    $(planning_cells[cell]).attr("data-target", "#rdvInfoModal");
+                    
+                }
+            }
+        }
+        
+        function changeClassLi(active_li){ // changement couleur tri jour/semaine/mois
+            var list_li=document.getElementById("sort-date").getElementsByTagName("li");
+            for(var li in list_li) {
+                list_li[li].className="";
+            }
+            active_li.className="active";
+        }
+     
+	var ac_config = {
+		source: "autocomplete_names.php",
+		select: function(event, ui){
+			$("#inputLastName").val(ui.item.cli_nom);
+			$("#inputFirstName").val(ui.item.cli_prenom);
+			$("#inputPostalCode").val(ui.item.cli_cp);
+                        $('#inputTitle').val(ui.item.civ_id);
+		},
+		minLength:1
+	};
+        
+	$("#inputLastName").autocomplete(ac_config);
+        
+        var activepra = <?php echo $active_pra; ?>;
+        $(activepra).trigger("click");
+        
+        $(".tab_pra").click(function (){
+          var pra = $(this).attr("id");
+          $("#weekless").attr("href", $("#weekless").attr("href")+"&ap="+pra);
+          $("#weekmore").attr("href", $("#weekmore").attr("href")+"&ap="+pra);
+        });
+        
+        
+        $(".rdv").click(function (){
+          var idsInfos = ["rdvInfoLastName", "rdvInfoFirstName", "rdvInfoPraticienName", "rdvInfoSubject", "rdvInfoDate", "rdvInfoHour"];
+          var crenauInfo = new Array();
+          $.post("http://ppeepsi2016.franceserv.com/Module_Zlatan/views/rdvinfo.php?id="+$(this).attr("id"), '', function(data, textStatus) {
+            crenauInfo = data.split(',');
+            var p = $("#rdvInfoModal").find(".modal-body");
+            for(var i=0;i<crenauInfo.length;i++){
+              $("#"+idsInfos[i]).append(crenauInfo[i]);
+            }
+          });
+          $("#rdvInfoModal").find(".modal-body").html(
+            '<p id="rdvInfoLastName">Nom : </p>'+
+            '<p id="rdvInfoFirstName">Prenom : </p>'+
+            '<p id="rdvInfoPraticienName">Praticien : </p>'+
+            '<p id="rdvInfoSubject">Motif : </p>'+
+            '<p id="rdvInfoDate">Le </p>'+
+            '<p id="rdvInfoHour">à </p>'
+          );
+        });
+        
+    </script>
+  </body>
+<?php
+$obj_db->db_close1();
+?>
+</html>
