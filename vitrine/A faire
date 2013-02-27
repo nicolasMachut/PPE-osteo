@@ -1,0 +1,13 @@
+plan google map par cabinet : statique
+page index statique
+les horaires : statique
+pas prendre 2 rdv en mm temps
+reserver crenaux salle -> javascript
+identifiant relatif pour les salles
+confirmation pour suppression rdv
+donnne base de donnee
+commenter code
+onclick sur nomcabinet et sur date calendrier
+date crenaux dispo
+abonnement muscu ? limite sans abonnement ?
+
