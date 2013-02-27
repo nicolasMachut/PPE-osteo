@@ -1,2 +1,2 @@
-PPE-osteo MACHUT PD
+PPE-osteo
 =========
