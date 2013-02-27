@@ -131,6 +131,13 @@
 </table>
 
 <script>
+
+	function afficherValidation()
+	{
+		alert("validation");
+	}
+	
+	
 	function VoirCrenauxDisponibles(){
 			var cabinet=$('#cab').val(),
 				inputdate=$('input[name="date1"]').val();
