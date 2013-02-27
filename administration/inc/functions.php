@@ -310,7 +310,7 @@ function generatePlanningCells ($crenaux, $praticien) {
             }
 
             if(date("N", strtotime($crenau["dat_date"])) != 7)  //si le crenau n'est pas un dimanche
-                echo"<td id='".$crenau['cre_id']."' onclick='getCrenauId(this)'>".$crenau["cli_nom"]."</td>";
+                echo"<td id='".$crenau['cre_id']."' onclick='getCrenauId(this)' datetime='".strtotime($crenau["dat_date"]." ".$crenau["heu_heures"])."' dispo='".$crenau["cre_disponibilite"]."'>".$crenau["cli_nom"]."</td>";
 
             if($indexCell==7) {
                 echo "</tr>";
@@ -384,6 +384,32 @@ function getCrenauById($id)
 	return $arr[0];
 }
 
+function editCrenauDispo($id, $dispo)
+{
+	if($dispo != 0){
+	//global $database_name;
+	
+		$data_res = mysql_query("
+			UPDATE
+				Crenaux
+			SET
+				cre_disponibilite = '".$dispo."'
+			WHERE
+				cre_id = $id
+		")or die(mysql_error());
+	} else {
+		$data_res = mysql_query("
+			UPDATE
+				Crenaux
+			SET
+				cre_disponibilite = '".$dispo."',
+				cli_id = '0'
+			WHERE
+				cre_id = $id
+		")or die(mysql_error());
+	}
+}
+
 function editCrenau($cli_id, $id)
 {
 	//global $database_name;
@@ -399,7 +425,7 @@ function editCrenau($cli_id, $id)
 		")or die(mysql_error());
 }
 
-function insertClient($lastName, $firstName, $postalCode) {
+function insertClient($title, $lastName, $firstName, $postalCode) {
     $data_res = mysql_query("
             INSERT INTO
                     Client
@@ -407,14 +433,16 @@ function insertClient($lastName, $firstName, $postalCode) {
                 cli_id,
                 cli_nom,
                 cli_prenom,
-                cli_cp            
+                cli_cp,
+		civ_id
             )
             VALUES
             (
                 '',
                 '".$lastName."',
                 '".$firstName."',
-                '".$postalCode."'
+                '".$postalCode."',
+		'".$title."'
             )
     ")or die(mysql_error());
 }

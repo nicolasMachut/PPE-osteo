@@ -12,31 +12,7 @@ require_once(ABSPATH.'inc/checklogin.php');
 $obj_db->db_connect1();
 
 include(ABSPATH."inc/generateDate.php");
-if(isset($_GET["title"]) && issetAndNotEmpty($_GET["lastName"]) && issetAndNotEmpty($_GET["firstName"]) && issetAndNotEmpty($_GET["postalCode"])) {
-  $title=mysql_real_escape_string($_GET["title"]);
-  $lastName=mysql_real_escape_string($_GET["lastName"]);
-  $firstName=mysql_real_escape_string($_GET["firstName"]);
-  $postalCode=mysql_real_escape_string($_GET["postalCode"]);
-   switch($title) {
-    case "Mr." :
-      $title=1;
-      break;
-    case "Mme." :
-      $title=2;
-      break;
-    case "Mlle." :
-      $title=3;
-      break;
-  }
-  $client=clientExist($lastName, $firstName, $postalCode);
-  if($client && count($client)<2)
-    editCrenau($client[0]["cli_id"], $_GET["crenauId"]);
-  else {
-    insertClient($lastName, $firstName, $postalCode);
-    $client=clientExist($lastName, $firstName, $postalCode);
-    editCrenau($client[0]["cli_id"], $_GET["crenauId"]);
-  }
-}
+
 $active_pra = "lA_btn";
 if(isset($_GET["ap"]))
   $active_pra = $_GET["ap"];
@@ -107,7 +83,7 @@ $dateEndWeek=strtotime('sunday this week', $dateBeginWeek);
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
                 <h3 id="myModalLabel">Prise de rendez-vous</h3>
             </div>
-                <form class="form-horizontal form-search" method="get" action="accueil.php?"> <!-- formulaire d'inscription de nouveau client -->
+                <form class="form-horizontal form-search" method="post" action="add_rdv.php"> <!-- formulaire d'inscription de nouveau client -->
                     <div class="modal-body">
                       <!--<div class="control-group">
                         <div class="input-append">
@@ -167,9 +143,9 @@ $dateEndWeek=strtotime('sunday this week', $dateBeginWeek);
             <p id="rdvInfoHour">à </p>
           </div>
           <div class="modal-footer">
-            <button id="absentRdvClient_btn" class="btn btn-warning" data-dismiss="modal" aria-hidden="true">Absent</button>
-            <button id="cancelRdv_btn" class="btn btn-danger" data-dismiss="modal" aria-hidden="true">Annuler</button>
-            <button id="arrivalClient_btn" class="btn btn-primary" data-dismiss="modal" aria-hidden="true">Arrivé</button>
+            <button id="absentRdvClient_btn" class="btn btn-warning editDispo_btn" data-dismiss="modal" dispo="3" aria-hidden="true">Absent</button>
+            <button id="cancelRdv_btn" class="btn btn-danger editDispo_btn" data-dismiss="modal" dispo="0" aria-hidden="true">Annuler</button>
+            <button id="arrivalClient_btn" class="btn btn-primary editDispo_btn" data-dismiss="modal" dispo="4" aria-hidden="true">Arrivé</button>
             <button class="btn" data-dismiss="modal" aria-hidden="true">Fermer</button>
           </div>
         </div> <!-- /modal rdv info -->
@@ -203,7 +179,10 @@ $dateEndWeek=strtotime('sunday this week', $dateBeginWeek);
                     $(planning_cells[cell]).attr("class","rdv");
                     $(planning_cells[cell]).attr("data-toggle", "modal");
                     $(planning_cells[cell]).attr("data-target", "#rdvInfoModal");
-                    
+                    if($(planning_cells[cell]).attr("dispo") == 3)
+                      $(planning_cells[cell]).css("background-color", "#F99A14");
+                    else if($(planning_cells[cell]).attr("dispo") == 4)
+                      $(planning_cells[cell]).css("background-color", "#004FCC");                    
                 }
             }
         }
@@ -240,6 +219,12 @@ $dateEndWeek=strtotime('sunday this week', $dateBeginWeek);
         
         
         $(".rdv").click(function (){
+          $("#rdvInfoModal").attr("crenauId", $(this).attr("id"));
+          if($(this).attr("datetime") < Math.floor($.now()/1000))
+            $("#cancelRdv_btn").hide();
+          else
+            $("#cancelRdv_btn").show();
+            
           var idsInfos = ["rdvInfoLastName", "rdvInfoFirstName", "rdvInfoPraticienName", "rdvInfoSubject", "rdvInfoDate", "rdvInfoHour"];
           var crenauInfo = new Array();
           $.post("http://ppeepsi2016.franceserv.com/Module_Zlatan/views/rdvinfo.php?id="+$(this).attr("id"), '', function(data, textStatus) {
@@ -259,6 +244,18 @@ $dateEndWeek=strtotime('sunday this week', $dateBeginWeek);
           );
         });
         
+        $(".editDispo_btn").click(function() {
+          var crenau = $("#"+$("#rdvInfoModal").attr("crenauId"));
+          var dispo = $(this).attr("dispo");
+          $.post("http://ppeepsi2016.franceserv.com/Module_Zlatan/edit_crenau.php?id="+$("#rdvInfoModal").attr("crenauId")+"&dispo="+dispo, '', function(data, textStatus) {
+            if(dispo == 4)
+              $(crenau).css("background-color", "#004FCC");
+            else if(dispo == 3)
+             $(crenau).css("background-color", "#F99A14");
+            else if(dispo == 0)
+              top.location = "accueil.php";
+          });
+        });
     </script>
   </body>
 <?php
