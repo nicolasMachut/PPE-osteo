@@ -20,7 +20,7 @@
 				if(verifierDelaisSuppression($r['dat_date']))
 					echo'<td style="text-align:center";><b><a href="../../Controlleur/espaceClient/supprimerCrenauxPraticien.php?id='.$r['cre_id'].'"><i class="icon-trash"></i> Supprimer</a></b></td>';
 				else
-					echo'<td style="text-align:center"; class="alert warning-alert"><b><i class="icon-lock"> Un rendez-vous doit etre supprimé au minimum 48h à l\'avance</b></td>';
+					echo'<td style="text-align:center"; class="alert warning-alert"><b><i class="icon-lock"></i> Un rendez-vous doit etre annulé au minimum 48h à l\'avance</b></td>';
 				echo'</tr>';
 			}
 		}

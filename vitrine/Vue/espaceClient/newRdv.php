@@ -13,7 +13,6 @@
 				nomCabinet();
 			?>
 		</select>
-		<input type="submit" id="ok"/>
 		<label for="date1">Choisissez une date :</label>
 		<table class="ds_box" cellpadding="0" cellspacing="0" id="ds_conclass" style="display: none;">
 			<tr>
@@ -21,7 +20,11 @@
 			</tr>
 		</table>
 		<input type="text" name="date1" onclick="ds_sh(this);" />
-		<p id="julien">
+		<input type="submit" id="ok"/>
+		<?php 
+
+				echo'<h5>Liste des crénaux du '.$_POST['date1'].' pour le cabinet de '.$_POST['cab'].'</h5>';
+		?>
 		<div id="crenauxDispo" style="width : 100%; overflow : auto;">
 			<table class="table table-bordered">
 				<th style="text-align:center";>Salle</th>
