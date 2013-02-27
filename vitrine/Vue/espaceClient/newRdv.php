@@ -20,15 +20,17 @@
 			</tr>
 		</table>
 		<input type="text" name="date1" onclick="ds_sh(this);" />
-		<input type="submit" id="ok"/>
+		<input type="submit" id="ok" name="ok"/>
 		<?php 
-
-				echo'<h5>Liste des crénaux du '.$_POST['date1'].' pour le cabinet de '.$_POST['cab'].'</h5>';
+				if( isset($_POST['ok']) && !empty($_POST['date1']) )
+				echo'<h5>Liste des crénaux du '.convertionDate($_POST['date1']).' pour le cabinet de '.$_POST['cab'].'</h5>';
 		?>
-		<div id="crenauxDispo" style="width : 100%; overflow : auto;">
-			<table class="table table-bordered">
-				<th style="text-align:center";>Salle</th>
+		<div id="crenauxDispo" style="width : 101%; overflow : auto;">
+			<table class="table table-bordered">	
 				<?php 
+				if( isset($_POST['ok']) && !empty($_POST['date1']) )
+				{
+					echo'<th style="text-align:center";>Salle</th>';
 					$salle = getSalle($_POST['cab']);
 					$heure = getHeure();
 					foreach($heure AS $heu)
@@ -45,7 +47,7 @@
 							if(voirCrenauxDispo("2013-01-30",$heu['heu_heures'], $sal["sal_id"]))
 							{
 								?>
-									<td class = "alert alert-success" onClick="confirm('Voulez vous réserver ce crénaux ?')" style="text-align:center";><?php echo $nbPersInscrit." / ".$nbPersMax;?></td>
+									<td class = "alert alert-success" onClick="afficherValidation('<?php echo $heu['heu_heures'];?>','<?php echo $_SESSION['id'];?>','<?php echo $sal['sal_id']?>', '<?php echo $date;?>')" style="text-align:center";><?php echo $nbPersInscrit." / ".$nbPersMax;?></td>
 								<?php 
 							}
 							else
@@ -59,7 +61,7 @@
 						}
 						echo'</tr>';
 					}
-			
+				}
 ?>
 
 		
@@ -132,9 +134,12 @@
 
 <script>
 
-	function afficherValidation()
+	function afficherValidation(heure, idClient, salle, date)
 	{
-		alert("validation");
+		alert(heure);
+		alert(idClient);
+		alert(salle);
+		alert(date);
 	}
 	
 	

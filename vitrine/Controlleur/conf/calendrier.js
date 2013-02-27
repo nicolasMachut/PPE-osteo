@@ -226,7 +226,7 @@ function ds_format_date(d, m, y) {
 	m2 = m2.substr(m2.length - 2);
 	d2 = '00' + d; // 2 digits day.
 	d2 = d2.substr(d2.length - 2);
-	return d2 + '/' + m2 + '/' + y;
+	return d2 + '-' + m2 + '-' + y;
 }
 
 // When the user clicks the day.

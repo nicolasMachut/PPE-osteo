@@ -37,6 +37,7 @@ require_once'../../Modele/espaceClient/reserverCrenauxSalle.php';
 		$resultat = $jour . ' ' . $numJour . ' ' . $mois . ' ' . $annee;
 		return $resultat;
 	}
+	
 
 
 	function page($page, $compte)
