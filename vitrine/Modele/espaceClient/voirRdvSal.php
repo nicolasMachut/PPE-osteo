@@ -6,7 +6,7 @@ require_once'../../Controlleur/conf/connexionBDD.php';
 		$rdv = array();
 		global $bdd;
 		$reponse = $bdd -> query('
-		SELECT dat_date, heu_heures, PrendRDV.sal_id, cab_nom
+		SELECT dat_date, heu_heures, PrendRDV.sal_id, cab_nom, PrendRDV.sal_id
 		FROM PrendRDV
 		INNER JOIN Salle ON Salle.sal_id=PrendRDV.sal_id 
 		INNER JOIN Cabinet ON Cabinet.cab_id=Salle.cab_id 

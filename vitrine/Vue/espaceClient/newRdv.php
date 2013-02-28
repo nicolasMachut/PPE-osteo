@@ -31,8 +31,8 @@
 				if( isset($_POST['ok']) && !empty($_POST['date1']) )
 				{
 					echo'<th style="text-align:center";>Salle</th>';
-					$salle = getSalle($_POST['cab']);
-					$heure = getHeure();
+					$salle = getSalle($_POST['cab']);//récupère la liste des salles du cabinet
+					$heure = getHeure();// récupère les heures a afficher dans la bdd
 					foreach($heure AS $heu)
 					{
 						echo'<th style="text-align:center";>'.substr($heu['heu_heures'], 0, 5).'</th>';
@@ -42,12 +42,12 @@
 						echo'<tr><td style="text-align:center";>'.$sal['sal_id'].'</td>';
 						foreach($heure AS $heu)
 						{
-							$nbPersInscrit = nbPersInscrit("2013-01-30", $heu['heu_heures'], $sal['sal_id']);
+							$nbPersInscrit = nbPersInscrit($_POST['date1'], $heu['heu_heures'], $sal['sal_id']);
 							$nbPersMax = nbPersMax($sal['sal_id']);
-							if(voirCrenauxDispo("2013-01-30",$heu['heu_heures'], $sal["sal_id"]))
+							if(voirCrenauxDispo($_POST['date1'],$heu['heu_heures'], $sal["sal_id"]))
 							{
 								?>
-									<td class = "alert alert-success" onClick="afficherValidation('<?php echo $heu['heu_heures'];?>','<?php echo $_SESSION['id'];?>','<?php echo $sal['sal_id']?>', '<?php echo $date;?>')" style="text-align:center";><?php echo $nbPersInscrit." / ".$nbPersMax;?></td>
+									<td class = "alert alert-success" onClick="afficherValidation('<?php echo substr($heu['heu_heures'], 0, 5);?>','<?php echo $_SESSION['id'];?>','<?php echo $sal['sal_id']?>', '<?php echo convertionDate($_POST['date1']);?>')" style="text-align:center";><?php echo $nbPersInscrit." / ".$nbPersMax;?></td>
 								<?php 
 							}
 							else
@@ -76,6 +76,8 @@
 		</table>
 	</div>
 </div>
+
+<div id="confirmation" class="alert alert-warning" style="display : none";"></div>
 
 <!-- Affichage des crénaux réservés -->
 
@@ -115,7 +117,7 @@
 		echo '</table></br>';
 		echo'<h5>Historique des crénaux réservés : </h5>';
 		echo'<table class="table table-striped table-bordered">';
-		echo'<th style="text-align:center";>Date</th><th style="text-align:center";>Heure</th><th style="text-align:center";>Cabinet</th>';
+		echo'<th style="text-align:center";>Date</th><th style="text-align:center";>Heure</th><th style="text-align:center";>Salle</th><th style="text-align:center";>Cabinet</th>';
 		foreach($rdv AS $r)
 		{
 			if($date > $r['dat_date'])
@@ -123,6 +125,7 @@
 				echo'<tr>
 						<td style="text-align:center";>'.convertionDate($r['dat_date']).'</td>
 						<td style="text-align:center";>'.substr($r['heu_heures'], 0, 5).'</td>
+						<td style="text-align:center;">'.$r['sal_id'].'</td>
 						<td style="text-align:center";><a href="../espacePublic/details.php?cab='.$r['cab_nom'].'">'.$r['cab_nom'].'</a></td>
 					</tr>';
 			}
@@ -136,43 +139,68 @@
 
 	function afficherValidation(heure, idClient, salle, date)
 	{
-		alert(heure);
-		alert(idClient);
-		alert(salle);
-		alert(date);
+		if( document.getElementById('confirmation').hasChildNodes() )
+			supprimerValidation();
+		
+		document.getElementById('confirmation').style.display="block";
+
+		//Création recapitulatif crénaux
+		var newP = document.createElement('p');
+		newP.id = "pConfirm";
+		var newPText = document.createTextNode('Le : ' + date + ' à ' + heure + ' dans la salle : ' + salle);
+
+		//Création titre
+		var newTitre = document.createElement('p');
+		newTitre.id = "pTitre";
+		var newTitreText = document.createTextNode('Réserver un crénaux : ');
+
+		//Création lien confirmation
+		var newLinkConfirm = document.createElement('a');
+		newLinkConfirm.id = 'aConfirm';
+		
+		newLinkConfirm.setAttribute('onClick','confirmerCrenaux("heure")');
+		var newLinkConfirmText = document.createTextNode('Confirmer				');
+
+		//création lien annulation
+		var newLinkAnnul = document.createElement('a');
+		newLinkAnnul.id = 'aAnnul';
+		newLinkAnnul.setAttribute('onclick', 'supprimerValidation()');
+		var newLinkAnnulText = document.createTextNode('Annuler');
+
+		//appendChild
+		newP.appendChild(newPText);
+		newLinkConfirm.appendChild(newLinkConfirmText);
+		newLinkAnnul.appendChild(newLinkAnnulText);
+		newTitre.appendChild(newTitreText);
+
+		//affichage 
+		document.getElementById('confirmation').appendChild(newTitre);
+		document.getElementById('confirmation').appendChild(newP);
+		document.getElementById('confirmation').appendChild(newLinkConfirm);
+		document.getElementById('confirmation').appendChild(newLinkAnnul);
+	}
+
+	function supprimerValidation()
+	{
+			var pConfirm = document.getElementById('pConfirm');
+			pConfirm.parentNode.removeChild(pConfirm);
+	
+			var aConfirm = document.getElementById('aConfirm');
+			aConfirm.parentNode.removeChild(aConfirm);
+	
+			var aAnnul = document.getElementById('aAnnul');
+			aAnnul.parentNode.removeChild(aAnnul);
+
+			var pTitre = document.getElementById('pTitre');
+			pTitre.parentNode.removeChild(pTitre);
+
+			document.getElementById('confirmation').style.display="none";
+	}
+
+	function confirmerCrenaux(date, heure, salle, idClient)
+	{
+		$.post("../../Modele/espaceClient/reserverCrenauxSalle.php?date="+date+"&heure="+heure+"&salle="+salle+"&idClient="+idClient, ' ', function(data, textStatus) {alert(data);});
 	}
 	
-	
-	function VoirCrenauxDisponibles(){
-			var cabinet=$('#cab').val(),
-				inputdate=$('input[name="date1"]').val();
-				
-			if(/(\d{2})\/(\d{2})\/(\d{4})/.test(inputdate)) {
-				var date=inputdate.replace(/(\d{2})\/(\d{2})\/(\d{4})/, '$3-$2-$1' );
-					
-					
-				$.ajax({
-						url:"recupererCrenaux.php",
-						data: {date: date, cab: cabinet},
-						type: "POST"
-				})
-				.done(function(res){
-					var crenaux=JSON.parse(res);
-					var table=$('<table/>');
-					$('#crenauxTable').html("");
-					table.appendTo($('#crenauxTable'));
-					$(crenaux).each(function(){
-							$('<tr/>').html('<td>'+this.heu_heures+'</td>').appendTo(table);
-					})
-				})
-			}
-	}
-	
-	$('.ds_cell').live('click', function(){
-			VoirCrenauxDisponibles();
-	});
-	$('#cab').on('change', function(){
-			VoirCrenauxDisponibles();
-	})
 </script>
 

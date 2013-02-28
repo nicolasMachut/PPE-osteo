@@ -1,16 +1,16 @@
 <?php
-	require_once'../../Controlleur/conf/connexionBDD.php';
+
+	/*require_once'../../Controlleur/conf/connexionBDD.php';
+	global $bdd;
+	$reponse = $bdd -> query('
+			INSERT INTO PrendRDV (sal_id, dat_date, heu_heures, cli_id)
+			VALUE("'.$salle.'", "'.$date.'", "'.$heure.'", "'.$idClient.'");
+			');*/
 	
-	function reserverCrenauxSalle($salle, $date, $heure, $idClient) // Réserve un nouveau crénaux
-	{
-		
-		global $bdd;
-		$reponse = $bdd -> query('
-				INSERT INTO PrendRDV (sal_id, dat_date, heu_heures, cli_id)
-				VALUE("'.$salle.'", "'.$date.'", "'.$heure.'", "'.$idClient.'");
-				');
-		return $reponse;
-	}
+	echo $_REQUEST['date'];
+	echo $_REQUEST['heure'];
+	echo $_REQUEST['idClient'];
+	echo $_REQUEST['salle'];
 	
 	/*function verifierDoubleRdv($idClient, $date, $heure)
 	{
@@ -26,7 +26,3 @@
 				');
 	}*/
 	
-	function voirCabinetClient($idClient)
-	{
-		
-	}

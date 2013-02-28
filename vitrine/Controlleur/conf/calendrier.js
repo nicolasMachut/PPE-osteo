@@ -221,12 +221,12 @@ function ds_py() {
 }
 
 // Format the date to output.
-function ds_format_date(d, m, y) {
+function ds_format_date(y, m, d) {
 	m2 = '00' + m; // 2 digits month.
 	m2 = m2.substr(m2.length - 2);
 	d2 = '00' + d; // 2 digits day.
 	d2 = d2.substr(d2.length - 2);
-	return d2 + '-' + m2 + '-' + y;
+	return y + '-' + m2 + '-' + d2;
 }
 
 // When the user clicks the day.
@@ -235,11 +235,11 @@ function ds_onclick(d, m, y) {
 	
 	if (typeof(ds_element.value) != 'undefined') {
 		// Set the value of it, if we can.
-		ds_element.value = ds_format_date(d, m, y);
+		ds_element.value = ds_format_date(y, m, d);
 	}
 	else if (typeof(ds_element.innerHTML) != 'undefined') {
 		// Maybe we want to set the HTML in it.
-		ds_element.innerHTML = ds_format_date(d, m, y);
+		ds_element.innerHTML = ds_format_date(y, m, d);
 	}
 	else {
 		// I don't know how should we display it, just alert it to user.
