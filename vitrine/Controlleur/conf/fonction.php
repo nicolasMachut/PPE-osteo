@@ -127,6 +127,35 @@ require_once'../../Modele/espaceClient/reserverCrenauxSalle.php';
 	}
 	
 	//-------------------------------------------------------------------------------
+
 	
+	function verificationJourOuverture( $date ) // Verifie que le jour choisis par le client n'est pas un dimanche
+	{
+		$timestamp = strtotime($date);
+		$jour = date('l', $timestamp);
+		if( $jour == "Sunday" )
+			return false;
+		else
+			return true;
+	}
+	//---------------------------------------------------------------------------------
 	
+	function verifierJourHeureCrenaux( $date, $heure )// verifie le jour et l'heure du crenaux salle par rapport au jour actuel
+	{
+		$dateDay = date('Y-m-d');
+		if($dateDay < $date)
+			return true;//Le jour n'est pas passé on peut prendre rdv
+		elseif( $dateDay > $date )
+		return false;//le jour est passé, impossible de prendre rdv
+		elseif( $dateDay == $date )
+		{
+			$heureNow =  date('H:i:s');
+			if( $heureNow > $heure )
+				return false; // L'heure est passé on peut donc pas prendre rdv
+			else
+				return true;// L'heure n'est pas passé, pas de rdv
+		}
+	}
+	
+	//---------------------------------------------------------------------------------
 	

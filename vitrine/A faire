@@ -1,23 +1,15 @@
 plan google map par cabinet : statique
 page index statique
 les horaires : statique
-pas prendre 2 rdv en mm temps
 reserver crenaux salle -> javascript
 identifiant relatif pour les salles
 confirmation pour suppression rdv
 donnne base de donnee
-commenter code
-onclick sur nomcabinet et sur date calendrier
-date crenaux dispo
+onclick sur nomcabinet et sur date calendrier ??
 abonnement muscu ? limite sans abonnement ?
+charger le tableaux de reservation des crenaux avec le cabinet le plus utilise et la date du jour
 
-
-fonction a deplacer : 
-fonction nom cabinet dans voirRdvSal
-fonction verifierJourHeureCrenaux dans voirRdvSal
-fonction verificationJourOuverture dans voirRdvSal
+fonction nom cabinet dans voirRdvSal -> a deplacer et modifier
 
 changer de methode pour la liste des codes erreurs -> tableaux ?
 
-page afficher.php en triple
-hacher mdp connexion client

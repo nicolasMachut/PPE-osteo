@@ -1,7 +1,7 @@
 <?php
 		require_once('../../Modele/espaceClient/connexionClient.php');
-		//$mdp = md5($_POST['textinput2']);
-		$mdp = $_POST['textinput2'];
+		$mdp = md5($_POST['textinput2']);
+		//$mdp = $_POST['textinput2'];
 		if( Connexion(mysql_escape_string($_POST['textinput1']), mysql_escape_string($mdp)) == false ) // Si aucun client trouvé
 		{
 				header('location:../../Controlleur/espacePublic/index.php?er=1');
