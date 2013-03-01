@@ -30,6 +30,7 @@
 				<?php 
 				if( isset($_POST['ok']) && !empty($_POST['date1']) )
 				{
+					ajouterDate($_POST['date1']);
 					echo'<th style="text-align:center";>Salle</th>';
 					$salle = getSalle($_POST['cab']);//récupère la liste des salles du cabinet
 					$heure = getHeure();// récupère les heures a afficher dans la bdd
@@ -44,20 +45,45 @@
 						{
 							$nbPersInscrit = nbPersInscrit($_POST['date1'], $heu['heu_heures'], $sal['sal_id']);
 							$nbPersMax = nbPersMax($sal['sal_id']);
-							if(voirCrenauxDispo($_POST['date1'],$heu['heu_heures'], $sal["sal_id"]))
+							if(verifierJourHeureCrenaux($_POST['date1'], $heu['heu_heures']))// Vérifie si le crenaux du rdv est passé, si il n'est pas passé, on affiche en vert
+							{
+								if(voirCrenauxDispo($_POST['date1'],$heu['heu_heures'], $sal["sal_id"]))//verifie si la salle est pleine, si elle n'est pas pleine on affiche en vert
+								{
+									if(verificationJourOuverture($_POST['date1']))
+									{
+										if(empecherDoubleRdv($_POST['date1'], $heu['heu_heures'], $_SESSION['id']))
+										{
+											?>
+												<td class = "alert alert-success" onClick="afficherValidation('<?php echo substr($heu['heu_heures'], 0, 5);?>','<?php echo $_SESSION['id'];?>','<?php echo $sal['sal_id']?>', '<?php echo convertionDate($_POST['date1']);?>')" style="text-align:center";><?php echo $nbPersInscrit." / ".$nbPersMax;?></td>
+											<?php 
+										}
+										else
+										{
+											?>
+												<td class = "alert alert-warning" onclick="supprimerValidation(), alert('Vous avez déjà un rendez-vous ou réservé un crénaux le <?php echo convertionDate($_POST['date1']);?> à <?php echo substr($heu['heu_heures'], 0, 5);?>.');" style="text-align:center";><?php echo $nbPersInscrit."/".$nbPersMax;?></td>
+											<?php 
+										}
+									}
+									else
+									{
+										?>
+											<td class = "alert alert-error" onclick="supprimerValidation(), alert('Vous ne pouvez pas réserver de crénaux en dehors des heures d\'ouverture.');" style="text-align:center";><?php echo $nbPersInscrit."/".$nbPersMax;?></td>
+										<?php 
+									}
+								}
+								else //si elle est pleine on affiche en rouge
+								{
+									?>
+										<td class = "alert alert-error" onclick="supprimerValidation(), alert('La salle est pleine : choisissez une autre salle ou un autre crénaux.');;" style="text-align:center";><?php echo $nbPersInscrit."/".$nbPersMax;?></td>
+									<?php 
+								}								
+							}
+							else// le crenaux est passé, la case est affiché en rouge
 							{
 								?>
-									<td class = "alert alert-success" onClick="afficherValidation('<?php echo substr($heu['heu_heures'], 0, 5);?>','<?php echo $_SESSION['id'];?>','<?php echo $sal['sal_id']?>', '<?php echo convertionDate($_POST['date1']);?>')" style="text-align:center";><?php echo $nbPersInscrit." / ".$nbPersMax;?></td>
+									<td class = "alert alert-error" onclick="supprimerValidation(), alert('Vous ne pouvez pas réserver de crénaux pour un jour antérieur à la date actuelle.');;" style="text-align:center";><?php echo $nbPersInscrit."/".$nbPersMax;?></td>
 								<?php 
 							}
-							else
-							{
-								?>
-									<td class = "alert alert-error" onClick="alert('Ce crénaux est complet. Veuillez en choisir un autre.')" style="text-align:center";><?php echo $nbPersInscrit."/".$nbPersMax;?></td>
-								<?php 
-								
-							}
-							
 						}
 						echo'</tr>';
 					}
@@ -139,8 +165,7 @@
 
 	function afficherValidation(heure, idClient, salle, date)
 	{
-		if( document.getElementById('confirmation').hasChildNodes() )
-			supprimerValidation();
+		supprimerValidation();
 		
 		document.getElementById('confirmation').style.display="block";
 
@@ -158,7 +183,7 @@
 		var newLinkConfirm = document.createElement('a');
 		newLinkConfirm.id = 'aConfirm';
 		
-		newLinkConfirm.setAttribute("onClick","confirmerCrenaux("+date+",'+heure+','+salle+','+idClient+')");
+		newLinkConfirm.setAttribute('onClick','confirmerCrenaux()');
 		var newLinkConfirmText = document.createTextNode('Confirmer ');
 
 		//création lien annulation
@@ -182,6 +207,8 @@
 
 	function supprimerValidation()
 	{
+		if( document.getElementById('confirmation').hasChildNodes() )
+		{
 			var pConfirm = document.getElementById('pConfirm');
 			pConfirm.parentNode.removeChild(pConfirm);
 	
@@ -195,6 +222,7 @@
 			pTitre.parentNode.removeChild(pTitre);
 
 			document.getElementById('confirmation').style.display="none";
+		}
 	}
 
 	function confirmerCrenaux(date, heure, salle, idClient)

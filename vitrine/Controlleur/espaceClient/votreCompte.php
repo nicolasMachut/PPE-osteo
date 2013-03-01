@@ -1,6 +1,6 @@
 <?php
 	session_start();
-	if(isset($_SESSION['type']) AND $_SESSION['type'] == "client")
+	if( isset($_SESSION['type']) AND $_SESSION['type'] == "client" )
 	{
 		include'../../Vue/head.php';
 		include'../conf/tableaux.php';

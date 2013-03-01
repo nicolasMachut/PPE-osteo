@@ -1,14 +1,10 @@
-
+<html>
   <body>
-
     <div class="container">
-    	  <?php
-		if(isset($_REQUEST['er']))
-		{
-			codeErreur($_REQUEST['er']);
-		}
-		
-	?>
+	    <?php
+			if( isset($_REQUEST['er']) )
+				codeErreur($_REQUEST['er']);
+		?>
       <div class="hero-unit">
         <div>
           <h1>

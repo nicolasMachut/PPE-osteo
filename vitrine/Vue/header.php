@@ -7,13 +7,13 @@
           <ul class="nav">
           
             <?php
-				if(isset($_SESSION['type']))
+				if( isset($_SESSION['type']) )
 				{
-					if($_SESSION['type'] == "client")
+					if( $_SESSION['type'] == "client" )
 					{
 						echo'
 						<li class="active">
-							<a href="../espaceClient/votreCompte.php">
+							<a href="../espaceClient/votreCompte.php?p=info">
 								Votre compte
 							</a>
 						</li>
@@ -25,7 +25,7 @@
              </ul>
          
           <?php 
-			if(isset($_SESSION['type']))
+			if( isset($_SESSION['type']) )
 			{
 				echo '<ul class="nav pull-right">
 						<li><a>'.$_SESSION["nom"].' '.$_SESSION['prenom'].'</a></li>

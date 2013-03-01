@@ -1,4 +1,5 @@
 <?php
+	//tableau contenant la liste des liens dans la page votreCompte.php
 	$compte = array(
 		array(
 		'libelle' => 'info',
@@ -13,10 +14,3 @@
 		'texte' => 'Réserver du temps dans une salle'
 		)
 	);
-
-	$gestion = array(
-			array(
-			'libelle' => 'ajout',
-			'texte' => 'Ajouter Praticien'		
-					)
-			);

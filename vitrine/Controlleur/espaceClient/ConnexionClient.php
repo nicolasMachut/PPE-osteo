@@ -2,13 +2,13 @@
 		require_once('../../Modele/espaceClient/connexionClient.php');
 		//$mdp = md5($_POST['textinput2']);
 		$mdp = $_POST['textinput2'];
-		if(Connexion(mysql_escape_string($_POST['textinput1']), mysql_escape_string($mdp)) == false) // Si aucun client trouvé
+		if( Connexion(mysql_escape_string($_POST['textinput1']), mysql_escape_string($mdp)) == false ) // Si aucun client trouvé
 		{
 				header('location:../../Controlleur/espacePublic/index.php?er=1');
 		}
 		else // si client trouve, on ouvre une session client;
 		{
-			$donneeCli = Connexion(mysql_escape_string($_POST['textinput1']), mysql_escape_string($mdp));
+			$donneeCli = Connexion( mysql_escape_string($_POST['textinput1']), mysql_escape_string($mdp) );// récupère les informations sur le client et rempli les variables session
 			session_start();
 			$_SESSION['type'] = "client";
 			$_SESSION['id'] = $donneeCli['cli_id'];

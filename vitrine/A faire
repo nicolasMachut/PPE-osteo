@@ -10,5 +10,14 @@ commenter code
 onclick sur nomcabinet et sur date calendrier
 date crenaux dispo
 abonnement muscu ? limite sans abonnement ?
-pas prendre de rdv en dehors des heures d'ouverture, dimanche aussi
 
+
+fonction a deplacer : 
+fonction nom cabinet dans voirRdvSal
+fonction verifierJourHeureCrenaux dans voirRdvSal
+fonction verificationJourOuverture dans voirRdvSal
+
+changer de methode pour la liste des codes erreurs -> tableaux ?
+
+page afficher.php en triple
+hacher mdp connexion client

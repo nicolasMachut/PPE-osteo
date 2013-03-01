@@ -1,6 +1,6 @@
 <?php
-require_once'../../Controlleur/conf/connexionBDD.php';
-	function voirRdvPra ($id)
+	require_once'../../Controlleur/conf/connexionBDD.php';
+	function voirRdvPra ( $id ) //renvoie la liste des rendez-vous praticiens en fonction de l'id du client
 	{
 		$rdv = array();
 		global $bdd;
@@ -13,7 +13,7 @@ require_once'../../Controlleur/conf/connexionBDD.php';
 				ORDER BY dat_date DESC
 				');
 
-			while($donnee = $reponse -> fetch())
+			while( $donnee = $reponse -> fetch() )
 			{
 				$rdv[] = $donnee;
 			}

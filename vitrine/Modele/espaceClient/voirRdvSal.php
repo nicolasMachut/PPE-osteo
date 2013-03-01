@@ -1,7 +1,7 @@
 <?php
-require_once'../../Controlleur/conf/connexionBDD.php';
+	require_once'../../Controlleur/conf/connexionBDD.php';
 
-	function voirRdvSal ($id)
+	function voirRdvSal ( $id )// renvoie les rdv en salle d'un client en fonction de son identifiant
 	{
 		$rdv = array();
 		global $bdd;
@@ -13,16 +13,16 @@ require_once'../../Controlleur/conf/connexionBDD.php';
 		WHERE cli_id='.$id.'
 		ORDER BY dat_date DESC
 		');
-			while($donnee = $reponse -> fetch())
+			while( $donnee = $reponse -> fetch() )
 			{
 				$rdv[] = $donnee;
 			}
-			return $rdv; // renvoie les rdv en salle d'un client
+			return $rdv;
 	}
 	
 	//-------------------------------------------------------------------------------
 	
-	function getSalle($cab)
+	function getSalle( $cab ) // renvoie l'id des salles d'un cabinet en fonction de l'identifiant du cabinet
 	{
 		$salle = array();
 		global $bdd;
@@ -31,32 +31,32 @@ require_once'../../Controlleur/conf/connexionBDD.php';
 				FROM Salle
 				WHERE Salle.cab_id = (SELECT cab_id FROM Cabinet WHERE cab_nom = "'.$cab.'") 
 				');
-		while($donnee = $reponse -> fetch())
+		while( $donnee = $reponse -> fetch() )
 		{
 			$salle[] = $donnee;
 		}
-		return $salle; // renvoie l'id des salles d'un cabinet
+		return $salle; 
 	}
 	
 	//--------------------------------------------------------------------------------
 	
-	function getHeure()
+	function getHeure()// renvoie la liste des heures 
 	{
 		$heure = array();
 		global $bdd;
 		$reponse = $bdd -> query('
 				SELECT heu_heures FROM Heure
 				');
-		while($donnee = $reponse -> fetch())
+		while( $donnee = $reponse -> fetch() )
 		{
 			$heure[] = $donnee;
 		}
-		return $heure; // renvoie la liste des heures 
+		return $heure; 
 	}
 	
 	//--------------------------------------------------------------------------------
 	
-	function  nbPersInscrit($date, $heure, $salle)
+	function  nbPersInscrit( $date, $heure, $salle )//renvoie le nb de personne inscrite dans une salle en fonction de l'heure, de la date et de la salle
 	{
 		global $bdd;
 		
@@ -69,7 +69,7 @@ require_once'../../Controlleur/conf/connexionBDD.php';
 	
 	//--------------------------------------------------------------------------------
 	
-	function nbPersMax($salle)
+	function nbPersMax( $salle )// renvoie le nombre de personne maximal autorisé par salle en fonction de la salle
 	{
 		global $bdd;
 		
@@ -93,3 +93,80 @@ require_once'../../Controlleur/conf/connexionBDD.php';
 		}
 	}
 
+	//---------------------------------------------------------------------------------
+	
+	function verifierJourHeureCrenaux( $date, $heure )// verifie le jour et l'heure du crenaux salle par rapport au jour actuel
+	{
+		$dateDay = date('Y-m-d');
+		if($dateDay < $date)
+			return true;//Le jour n'est pas passé on peut prendre rdv
+		elseif( $dateDay > $date )
+			return false;//le jour est passé, impossible de prendre rdv
+		elseif( $dateDay == $date )
+		{
+			$heureNow =  date('H:i:s');
+			if( $heureNow > $heure )
+				return false; // L'heure est passé on peut donc pas prendre rdv
+			else
+				return true;// L'heure n'est pas passé, pas de rdv
+		}
+	}
+	
+	//---------------------------------------------------------------------------------
+	
+	function empecherDoubleRdv( $date, $heure, $idClient )//vérifie que le client n'a pas deja un rdv soit en salle soit avec un praticien en fonction de la date, l'heure et l'id client
+	{
+		global $bdd;
+		$reponse = $bdd -> query('
+				SELECT * 
+				FROM PrendRDV 
+				WHERE dat_date = "'.$date.'" AND heu_heures = "'.$heure.'" AND cli_id = '.$idClient.'
+				');
+		
+		$reponse2 = $bdd -> query('
+				SELECT *
+				FROM Crenaux
+				WHERE dat_date = "'.$date.'" AND heu_heures = "'.$heure.'" AND cli_id = '.$idClient.'
+				');
+		
+		if( $donnee = $reponse -> fetch() || $donnee2 = $reponse2 -> fetch() )
+			return false;
+		else
+			return true;
+	}
+	
+	
+	//---------------------------------------------------------------------------------
+	
+	function ajouterDate( $date )// Ajoute une date dans la base si elle n'existe pas
+	{
+		global $bdd;
+		$reponse = $bdd -> query('
+					SELECT * FROM Date WHERE dat_date = "'.$date.'"
+				');
+		if( $donnee = $reponse -> fetch() )
+		{
+			return true;
+		}
+		else
+		{
+			$ajouter = $bdd -> query('
+					INSERT INTO Date (dat_date)
+					VALUE("'.$date.'");
+					');
+		}
+	}
+
+	//---------------------------------------------------------------------------------
+	
+	function verificationJourOuverture( $date ) // Verifie que le jour choisis par le client n'est pas un dimanche
+	{
+		$timestamp = strtotime($date);
+		$jour = date('l', $timestamp);
+		if( $jour == "Sunday" )
+			return false;
+		else
+			return true;
+	}
+	//---------------------------------------------------------------------------------
+	

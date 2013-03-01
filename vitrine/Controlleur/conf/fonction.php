@@ -1,11 +1,11 @@
 <?php
 require_once'../../Modele/espaceClient/reserverCrenauxSalle.php';
 
-	function convertionDate($maDate)
+	function convertionDate( $maDate )// convertie une date au format "Vendredi 23 Mars 2013", en francais
 	{
 		$timestamp = strtotime($maDate);
 		$afficherDateRdv = date('l', $timestamp);
-		switch($afficherDateRdv)
+		switch( $afficherDateRdv )
 		{
 			case "Monday" : $jour = "Lundi"; break;
 			case "Tuesday" : $jour = "Mardi"; break;
@@ -16,7 +16,7 @@ require_once'../../Modele/espaceClient/reserverCrenauxSalle.php';
 			case "Sunday" : $jour = "Dimanche"; break;
 		}
 		$afficherDateRdv = date('F', $timestamp);
-		switch($afficherDateRdv)
+		switch( $afficherDateRdv )
 		{
 			case "January": $mois = "Janvier"; break;
 			case "February" : $mois = "Février"; break;
@@ -38,17 +38,17 @@ require_once'../../Modele/espaceClient/reserverCrenauxSalle.php';
 		return $resultat;
 	}
 	
+	//--------------------------------------------------------------------------------
 
-
-	function page($page, $compte)
+	function page( $page, $compte ) //inclut les vues dans Vue/espaceCLient/votreCompte.php
 	{
-		if(isset($_SESSION['type']))
+		if( isset( $_SESSION['type'] ) )
 		{
-			if($_SESSION['type'] == "client")
+			if( $_SESSION['type'] == "client" )
 			{
-				foreach($compte AS $c)
+				foreach( $compte AS $c )
 				{
-					if($page == $c['libelle'])
+					if( $page == $c['libelle'] )
 					{
 						include '../../Vue/espaceClient/'.$c['libelle'].'.php';
 					}
@@ -57,16 +57,18 @@ require_once'../../Modele/espaceClient/reserverCrenauxSalle.php';
 		}
 	}
 
-	function codeErreur($er)
+	//--------------------------------------------------------------------------------
+	
+	function codeErreur( $er )//Liste des différents messages a afficher : succes/erreur/warning
 	{
-		switch($er)
+		switch( $er )
 		{
 			case 0 : 
 				echo'
 					<div class="alert alert-success">
 						<button type="button" class="close" data-dismiss="alert">&times;</button>
 						<p>Vous êtes maintenant connecté, vous pouvez accéder à votre espace personnel
-						 en cliquant sur <a href="../espaceClient/votreCompte.php">"Votre Compte"</a>.</p>
+						 en cliquant sur <a href="../espaceClient/votreCompte.php?p=info">"Votre Compte"</a>.</p>
 					</div>
 					';
 			break;
@@ -96,14 +98,16 @@ require_once'../../Modele/espaceClient/reserverCrenauxSalle.php';
 		}
 	}
 	
-	function verifierDelaisSuppression($dateRdv)
+	//-----------------------------------------------------------------------------
+	
+	function verifierDelaisSuppression( $dateRdv )//Vérifie lors de la suppression d'un rdv si il est supprimé 48h a l'avance
 	{
-		$dateRdv = strtotime($dateRdv);
-		$dateDay = strtotime(date('Y-m-d'));
+		$dateRdv = strtotime( $dateRdv );
+		$dateDay = strtotime( date('Y-m-d') );
 		$diff = $dateRdv - $dateDay;
 		$nbHeure = 60 * 60;
 		$diff = $diff / $nbHeure;
-		if($diff >= 48)
+		if( $diff >= 48 )
 			return true;
 		else 
 			return false;
@@ -111,12 +115,12 @@ require_once'../../Modele/espaceClient/reserverCrenauxSalle.php';
 
 	//--------------------------------------------------------------------------------
 	
-	function voirCrenauxDispo($date, $heure, $salle)
+	function voirCrenauxDispo( $date, $heure, $salle )//vérifie que le crénaux dans une salle, a une heure et une date n'est pas plein
 	{
-		$nbPersInscrit = nbPersInscrit($date, $heure, $salle);
-		$nbPersMax = nbPersMax($salle);
+		$nbPersInscrit = nbPersInscrit( $date, $heure, $salle );
+		$nbPersMax = nbPersMax( $salle );
 	
-		if($nbPersInscrit >= $nbPersMax)// Si le nombre de personne inscrit est supérieur ou égale au nombre de personne max de la salle
+		if( $nbPersInscrit >= $nbPersMax )// Si le nombre de personne inscrit est supérieur ou égale au nombre de personne max de la salle
 			return false;
 		else
 			return true;
