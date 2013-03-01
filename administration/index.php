@@ -1,9 +1,11 @@
 <?php
+$typePage = "index";
 define('ABSPATH', dirname(__FILE__).'/');
 
 require(ABSPATH."inc/config.php");
 require_once(ABSPATH.'inc/db.php');
 require_once(ABSPATH.'inc/functions.php');
+require_once(ABSPATH.'inc/checklogin.php');
 
 $obj_db->db_connect1();
 
@@ -53,6 +55,11 @@ if(isset($_POST["login"]) && isset($_POST["password"])) {
   else {
     $cab=getUserCabinet($login, $pwd); //recupere donnŽe table cabinet
     $_SESSION["cab"]=$cab[0]["cab_id"];// recupere l'id du cabinet
+    if(substr($login,0,4) == "sec_"){
+      $_SESSION["grade"] = "sec";
+    } else if(substr($login,0,4) == "pra_") {
+      $_SESSION["grade"] = "pra";
+    }
 ?>
       <div class="alert alert-success">  
         <a class="close" data-dismiss="alert">x</a>  

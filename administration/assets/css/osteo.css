@@ -100,3 +100,7 @@ body {
 #moreInfosForm {
     margin: 0;
 }
+
+#headNav li a{
+    font-size: 14px;
+}

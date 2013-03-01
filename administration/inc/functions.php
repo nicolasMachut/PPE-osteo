@@ -66,16 +66,37 @@ function editUser($id, $email, $pseudo, $firstname, $lastname, $postalcode, $cit
 
 function getUserCabinet($login, $pwd)
 {
-    $res = mysql_query("
-		SELECT
-                    *
-                FROM
-                    Cabinet
-                WHERE
-                    cab_loginSec='".$login."'
-                AND cab_mdpSec='".$pwd."'
-	")or die(mysql_error());
-    
+	if(substr($login,0,4) == "sec_"){
+		$res = mysql_query("
+			SELECT
+			    *
+			FROM
+			    Secretaire
+			INNER JOIN
+			    Cabinet
+			ON
+			    sec_cab = cab_id
+			WHERE
+			    sec_login='".substr($login,4)."'
+			AND
+			    sec_mdp='".$pwd."'
+		")or die(mysql_error());
+	} else if(substr($login,0,4) == "pra_"){
+		$res = mysql_query("
+			SELECT
+			    *
+			FROM
+			    Praticien
+			INNER JOIN
+			    Cabinet
+			ON
+			    Praticien.cab_id = Cabinet.cab_id
+			WHERE
+			    pra_nom='".substr($login,4)."'
+			AND
+			    pra_mdp='".$pwd."'
+		")or die(mysql_error());
+	}
     while ($row = mysql_fetch_array($res))
     {
             $arr[] = $row;

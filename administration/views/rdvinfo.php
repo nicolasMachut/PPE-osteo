@@ -1,5 +1,4 @@
 <?php
-
 define('ABSPATH', dirname(__FILE__).'/../');
 
 require(ABSPATH."inc/config.php");
