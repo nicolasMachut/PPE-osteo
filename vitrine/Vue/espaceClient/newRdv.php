@@ -158,8 +158,8 @@
 		var newLinkConfirm = document.createElement('a');
 		newLinkConfirm.id = 'aConfirm';
 		
-		newLinkConfirm.setAttribute('onClick','confirmerCrenaux("heure")');
-		var newLinkConfirmText = document.createTextNode('Confirmer				');
+		newLinkConfirm.setAttribute("onClick","confirmerCrenaux("+date+",'+heure+','+salle+','+idClient+')");
+		var newLinkConfirmText = document.createTextNode('Confirmer ');
 
 		//création lien annulation
 		var newLinkAnnul = document.createElement('a');
@@ -200,6 +200,11 @@
 	function confirmerCrenaux(date, heure, salle, idClient)
 	{
 		$.post("../../Modele/espaceClient/reserverCrenauxSalle.php?date="+date+"&heure="+heure+"&salle="+salle+"&idClient="+idClient, ' ', function(data, textStatus) {alert(data);});
+		//Affiche du message html pour montrer que le rdv a ete reserve
+		//<div class="alert alert-success">
+		//	<button type="button" class="close" data-dismiss="alert">&times;</button>
+		//	<p>Le crénaux à bien été réservé.</p>
+		//</div>
 	}
 	
 </script>

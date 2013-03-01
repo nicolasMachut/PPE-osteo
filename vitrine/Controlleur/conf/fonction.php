@@ -88,7 +88,7 @@ require_once'../../Modele/espaceClient/reserverCrenauxSalle.php';
 			case 3 : 
 				echo'
 					<div class="alert alert-success">
-						<button onclick="afficher()" type="button" class="close" data-dismiss="alert">&times;</button>
+						<button type="button" class="close" data-dismiss="alert">&times;</button>
 						<p>Le crénaux à bien été libéré.</p>
 					</div>
 						';
