@@ -3,7 +3,7 @@ TODO :
 - traiter donner formulaire =====> FAIT
 - affichage planning par mois/jour/semaine
 - liste jour feriŽs
-- bulle info rdv client
+- bulle info rdv client ====> fait
 - generer planning (copier heure date dans crenaux http://sqlpro.developpez.com/cours/sqlaz/dml/#LII-E) (NB : verifier si ca a marchŽ au 1er Janvier 2013)
     --> resoudre id planning (essayer avec une classe) =======> FAIT
 - modif style de "PAUSE" dans planning, go to the osteo css !

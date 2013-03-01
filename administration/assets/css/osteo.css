@@ -44,7 +44,11 @@ body {
 }
 
 .empty-cell {
-    background-color: green;
+    background-color: #51A351;
+}
+
+.planning td {
+    cursor: pointer;
 }
 
 #sort-date {
@@ -71,4 +75,28 @@ body {
 }
 .modal-backdrop{
     z-index: 10;        
-}  
+}
+
+#moreInfosClientBtn{
+    width: 500px;
+    margin: auto;
+    margin-bottom: 8px;
+}
+
+.moreInfosSpan {
+    display: block;
+    height: 38px;
+}
+
+#rdvInfoModal .modal-body {
+    overflow: hidden;
+}
+
+#submitMoreInfos {
+    float: left;
+    width: 250px;
+}
+
+#moreInfosForm {
+    margin: 0;
+}

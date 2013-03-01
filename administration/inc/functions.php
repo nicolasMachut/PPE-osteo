@@ -361,7 +361,7 @@ function getCrenauById($id)
 
 	$res = mysql_query("
 		SELECT
-			cli_nom, cli_prenom, pra_nom, dat_date, heu_heures
+			cli_nom, cli_prenom, cli_adresse1, cli_adresse2, cli_cp, cli_ville, cli_tel, pra_nom, dat_date, heu_heures
 		FROM
                         Crenaux
 		LEFT JOIN
@@ -422,6 +422,26 @@ function editCrenau($cli_id, $id)
 				cli_id = '".$cli_id."'
 			WHERE
 				cre_id = $id
+		")or die(mysql_error());
+}
+
+function updateMoreInfosClients($id, $adress1, $adress2, $pc, $city, $tel, $email, $pwd)
+{
+	//global $database_name;
+	
+		$data_res = mysql_query("
+			UPDATE
+				Client
+			SET
+				cli_adresse1 = '".$adress1."',
+				cli_adresse2 = '".$adress2."',
+				cli_cp = '".$pc."',
+				cli_ville = '".$city."',
+				cli_tel = '".$tel."',
+				cli_mail = '".$email."',
+				cli_mdp = '".$pwd."'
+			WHERE
+				cli_id = (SELECT cli_id FROM Crenaux WHERE cre_id = '".$id."')
 		")or die(mysql_error());
 }
 
@@ -510,7 +530,7 @@ function browseDateAndHourAndInsertCrenau($dates,$praticien) {
     }
 }
 
-function insertPraticien ($nom) {
+function insertPraticien ($lastName,$firstName,$email,$grade,$pwd,$title,$cabinet) {
     $data_res = mysql_query("
             INSERT INTO
                     Praticien
@@ -518,6 +538,7 @@ function insertPraticien ($nom) {
                 pra_id,
                 pra_nom,
                 pra_prenom,
+		pra_email,
                 pra_grade,
                 pra_mdp,
                 civ_id,
@@ -527,12 +548,13 @@ function insertPraticien ($nom) {
             VALUES
             (
                 '',
-                '".$nom."',
-                '',
-                '',
-                '',
-                '5',
-                '5'
+                '".$lastName."',
+                '".$firstName."',
+                '".$email."',
+                '".$grade."',
+                '".$pwd."',
+                '".$title."',
+		'".$cabinet."'
             )
     ")or die(mysql_error());
 }

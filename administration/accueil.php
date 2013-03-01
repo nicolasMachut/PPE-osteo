@@ -1,7 +1,4 @@
 <?php
-//git remote add origin https://github.com/nicolasMachut/administration.git
-//git push -u origin master
-//http://youtu.be/p0EzL9E-2UY?t=2m16s
 define('ABSPATH', dirname(__FILE__).'/');
 
 require(ABSPATH."inc/config.php");
@@ -59,12 +56,12 @@ $dateEndWeek=strtotime('sunday this week', $dateBeginWeek);
         </h2>
         
         <div class="tabbable tabs-left">
-            <ul class="nav nav-pills" id="sort-date">
+            <!--<ul class="nav nav-pills" id="sort-date">
                 <li onclick="changeClassLi(this)"><a href="#">Par jour</a></li>
                 <li class="active" onclick="changeClassLi(this)"><a href="#">Par semaine</a></li>
                 <li onclick="changeClassLi(this)"><a href="#">Par mois</a></li>
                 <a href="rdvinfo.php?id=7749">blhblah</a>
-            </ul>
+            </ul>-->
             <ul class="nav nav-tabs">
 <?php           $cabinet=$_SESSION["cab"];
                 include(ABSPATH."praticiensTabs.php"); ?>
@@ -83,43 +80,43 @@ $dateEndWeek=strtotime('sunday this week', $dateBeginWeek);
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
                 <h3 id="myModalLabel">Prise de rendez-vous</h3>
             </div>
-                <form class="form-horizontal form-search" method="post" action="add_rdv.php"> <!-- formulaire d'inscription de nouveau client -->
-                    <div class="modal-body">
-                      <!--<div class="control-group">
-                        <div class="input-append">
-                          <input type="text" class="span2 search-query" placeholder="Rechercher client...">
-                          <button type="submit" class="btn">Search</button>
+            <form class="form-horizontal form-search" method="post" action="add_rdv.php"> <!-- formulaire d'inscription de nouveau client -->
+                <div class="modal-body">
+                  <!--<div class="control-group">
+                    <div class="input-append">
+                      <input type="text" class="span2 search-query" placeholder="Rechercher client...">
+                      <button type="submit" class="btn">Search</button>
+                    </div>
+                  </div>-->
+                    <div class="control-group">
+                        <label class="control-label" for="inputTitle">Civilite :</label>
+                        <div class="controls">
+                            <select id="inputTitle" name="inputTitle">
+                                <option value="0">Choisissez</option>
+                                <option id="gender_5" value="5">Mr.</option>
+                                <option id="gender_6" value="6">Mme.</option>
+                                <option id="gender_7" value="7">Mlle.</option>
+                            </select>
                         </div>
-                      </div>-->
-                        <div class="control-group">
-                            <label class="control-label" for="inputTitle">Civilite :</label>
-                            <div class="controls">
-                                <select id="inputTitle" name="title">
-                                    <option value="0">Choisissez</option>
-                                    <option id="gender_5" value="5">Mr.</option>
-                                    <option id="gender_6" value="6">Mme.</option>
-                                    <option id="gender_7" value="7">Mlle.</option>
-                                </select>
-                            </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="lastName">Nom :</label>
+                        <div class="controls">
+                            <input type="text" id="inputLastName" name="lastName" placeholder="Nom">
                         </div>
-                        <div class="control-group">
-                            <label class="control-label" for="lastName">Nom :</label>
-                            <div class="controls">
-                                <input type="text" id="inputLastName" name="lastName" placeholder="Nom">
-                            </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="firstName">Prenom :</label>
+                        <div class="controls">
+                            <input type="text" id="inputFirstName" name="firstName" placeholder="Prenom">
                         </div>
-                        <div class="control-group">
-                            <label class="control-label" for="firstName">Prenom :</label>
-                            <div class="controls">
-                                <input type="text" id="inputFirstName" name="firstName" placeholder="Prenom">
-                            </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="postalCode">Code Postal :</label>
+                        <div class="controls">
+                            <input type="text" id="inputPostalCode" name="postalCode" placeholder="Code Postal">
                         </div>
-                        <div class="control-group">
-                            <label class="control-label" for="postalCode">Code Postal :</label>
-                            <div class="controls">
-                                <input type="text" id="inputPostalCode" name="postalCode" placeholder="Code Postal">
-                            </div>
-                        </div>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <input type="hidden" value="null" id="crenauId" name="crenauId"/>
@@ -135,14 +132,45 @@ $dateEndWeek=strtotime('sunday this week', $dateBeginWeek);
               <h3 id="myModalLabel">Informations sur le rendez-vous</h3>
           </div>
           <div class="modal-body">
-            <p id="rdvInfoLastName">Nom : </p>
-            <p id="rdvInfoFirstName">Prenom : </p>
-            <p id="rdvInfoPraticienName">Praticien : </p>
-            <p id="rdvInfoSubject">Motif : </p>
-            <p id="rdvInfoDate">Le </p>
-            <p id="rdvInfoHour">à </p>
+            <div style="width: 140px;float: left">
+                <span class="moreInfosSpan">Nom : </span>
+                <span class="moreInfosSpan">Prenom :</span>
+                <div class="moreInfos">
+                    <span class="moreInfosSpan">Adresse :</span>
+                    <span class="moreInfosSpan">Adresse :</span>
+                    <span class="moreInfosSpan">Code postal :</span>
+                    <span class="moreInfosSpan">Ville :</span>
+                    <span class="moreInfosSpan">Telephone :</span>
+                    <span class="moreInfosSpan">Email :</span>
+                </div>
+                <span class="moreInfosSpan">Praticien :</span>
+                <span class="moreInfosSpan">Motif :</span>
+                <span class="moreInfosSpan">Le</span>
+                <span class="moreInfosSpan">à</span>
+            </div>
+            <div style="float: left" class="updateMoreInfos">
+                <span id="rdvInfoLastName" class="moreInfosSpan"></span>
+                <span id="rdvInfoFirstName" class="moreInfosSpan"></span>
+                <div class="moreInfos">
+                    <form id="moreInfosForm">
+                        <span class="moreInfosSpan"><input type="text" name="adress1" /></span>
+                        <span class="moreInfosSpan"><input type="text" name="adress2" /></span>
+                        <span class="moreInfosSpan"><input type="text" name="postalCode" /></span>
+                        <span class="moreInfosSpan"><input type="text" name="city" /></span>
+                        <span class="moreInfosSpan"><input type="text" name="telephone" /></span>
+                        <span class="moreInfosSpan"><input type="text" name="email" /></span>
+                        <input type="hidden" id="inputPwd" name="pwd" />
+                    </form>
+                </div>
+                <span id="rdvInfoPraticienName" class="moreInfosSpan"></span>
+                <span id="rdvInfoSubject" class="moreInfosSpan"></span>
+                <span id="rdvInfoDate" class="moreInfosSpan"></span>
+                <span id="rdvInfoHour" class="moreInfosSpan"></span>
+            </div>
           </div>
+          <button id="moreInfosClientBtn" class="btn btn-large btn-block btn-primary" type="button">Veuillez saisir les informations complementaires</button>
           <div class="modal-footer">
+            <button type="button" id="submitMoreInfos" class="btn btn-success">Valider les informations complementaires</button>
             <button id="absentRdvClient_btn" class="btn btn-warning editDispo_btn" data-dismiss="modal" dispo="3" aria-hidden="true">Absent</button>
             <button id="cancelRdv_btn" class="btn btn-danger editDispo_btn" data-dismiss="modal" dispo="0" aria-hidden="true">Annuler</button>
             <button id="arrivalClient_btn" class="btn btn-primary editDispo_btn" data-dismiss="modal" dispo="4" aria-hidden="true">Arrivé</button>
@@ -158,6 +186,7 @@ $dateEndWeek=strtotime('sunday this week', $dateBeginWeek);
     <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
     <script src="http://code.jquery.com/ui/1.10.1/jquery-ui.js"></script>
     <script src="assets/js/bootstrap.min.js"></script>
+    <script src="assets/js/functions.js"></script>
     <script type="text/javascript">
         function getCrenauId(crenau) { // prend l'id de chaque crenau et le renvoi a PHP
           var crenauId = crenau.id;
@@ -227,27 +256,47 @@ $dateEndWeek=strtotime('sunday this week', $dateBeginWeek);
             
           var idsInfos = ["rdvInfoLastName", "rdvInfoFirstName", "rdvInfoPraticienName", "rdvInfoSubject", "rdvInfoDate", "rdvInfoHour"];
           var crenauInfo = new Array();
-          $.post("http://ppeepsi2016.franceserv.com/Module_Zlatan/views/rdvinfo.php?id="+$(this).attr("id"), '', function(data, textStatus) {
+          $.post("http://ppeepsi2016.franceserv.com/administration/views/rdvinfo.php?id="+$(this).attr("id"), '', function(data, textStatus) {
             crenauInfo = data.split(',');
             var p = $("#rdvInfoModal").find(".modal-body");
             for(var i=0;i<crenauInfo.length;i++){
               $("#"+idsInfos[i]).append(crenauInfo[i]);
             }
+            if(crenauInfo[6]==1)
+                $("#moreInfosClientBtn").hide();
+            else
+                $("#moreInfosClientBtn").show();
           });
-          $("#rdvInfoModal").find(".modal-body").html(
-            '<p id="rdvInfoLastName">Nom : </p>'+
-            '<p id="rdvInfoFirstName">Prenom : </p>'+
-            '<p id="rdvInfoPraticienName">Praticien : </p>'+
-            '<p id="rdvInfoSubject">Motif : </p>'+
-            '<p id="rdvInfoDate">Le </p>'+
-            '<p id="rdvInfoHour">à </p>'
-          );
+          
+          $("#rdvInfoModal").find(".modal-body").find(".updateMoreInfos").html(
+                '<span id="rdvInfoLastName" class="moreInfosSpan"></span>                                          '+
+                '<span id="rdvInfoFirstName" class="moreInfosSpan"></span>                                         '+
+                '<div class="moreInfos">                                                                           '+
+                '    <form id="moreInfosForm">                                                                     '+
+                '        <span class="moreInfosSpan"><input type="text" name="adress1" /></span>                   '+
+                '        <span class="moreInfosSpan"><input type="text" name="adress2" /></span>                   '+
+                '        <span class="moreInfosSpan"><input type="text" name="postalCode" /></span>                '+
+                '        <span class="moreInfosSpan"><input type="text" name="city" /></span>                      '+
+                '        <span class="moreInfosSpan"><input type="text" name="telephone" class="telephone"/></span> '+
+                '        <span class="moreInfosSpan"><input type="text" name="email" /></span>                     '+
+                '        <input type="hidden" id="inputPwd" name="pwd" />                                          '+
+                '    </form>                                                                                       '+
+                '</div>                                                                                            '+
+                '<span id="rdvInfoPraticienName" class="moreInfosSpan"></span>                                     '+
+                '<span id="rdvInfoSubject" class="moreInfosSpan"></span>                                           '+
+                '<span id="rdvInfoDate" class="moreInfosSpan"></span>                                              '+
+                '<span id="rdvInfoHour" class="moreInfosSpan"></span>                                              '
+              );
+            $(".moreInfos").hide();
+            $("#submitMoreInfos").hide();
+            $("#submitMoreInfos").attr("crenauId", $(this).attr("id"));
+            
         });
         
         $(".editDispo_btn").click(function() {
           var crenau = $("#"+$("#rdvInfoModal").attr("crenauId"));
           var dispo = $(this).attr("dispo");
-          $.post("http://ppeepsi2016.franceserv.com/Module_Zlatan/edit_crenau.php?id="+$("#rdvInfoModal").attr("crenauId")+"&dispo="+dispo, '', function(data, textStatus) {
+          $.post("http://ppeepsi2016.franceserv.com/administration/edit_crenau.php?id="+$("#rdvInfoModal").attr("crenauId")+"&dispo="+dispo, '', function(data, textStatus) {
             if(dispo == 4)
               $(crenau).css("background-color", "#004FCC");
             else if(dispo == 3)
@@ -255,6 +304,28 @@ $dateEndWeek=strtotime('sunday this week', $dateBeginWeek);
             else if(dispo == 0)
               top.location = "accueil.php";
           });
+        });
+        
+        $("#moreInfosClientBtn").click(function (){
+            $("#moreInfosClientBtn").hide();
+            $("#submitMoreInfos").show();
+            $(".moreInfos").show();
+        });
+        
+        $("#submitMoreInfos").click(function (){
+            $("#inputPwd").val(generateRandomPassword(4));
+            var dataToBeSent = $("#moreInfosForm").serialize();
+            $.post("http://ppeepsi2016.franceserv.com/administration/add_moreInfosClient.php?id="+$(this).attr("crenauId"), dataToBeSent, function(data, textStatus) {
+            });
+            $('.close').trigger("click");
+        });
+        
+        $(".telephone").keyup(function (){
+            alert("hey");
+            //$(this).val(function(i, text) {
+            //text = text.replace(/(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})/, "$1.$2.$3.$4.$5");
+            //return text;
+            //});            
         });
     </script>
   </body>

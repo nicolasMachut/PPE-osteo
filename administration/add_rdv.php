@@ -1,5 +1,4 @@
 <?php
-//http://youtu.be/p0EzL9E-2UY?t=2m16s
 define('ABSPATH', dirname(__FILE__).'/');
 
 require(ABSPATH."inc/config.php");
@@ -8,7 +7,7 @@ require_once(ABSPATH.'inc/functions.php');
 require_once(ABSPATH.'inc/checklogin.php');
 
 $obj_db->db_connect1();
-if(isset($_POST["title"]) && issetAndNotEmpty($_POST["lastName"]) && issetAndNotEmpty($_POST["firstName"]) && issetAndNotEmpty($_POST["postalCode"])) {
+if(isset($_POST["inputTitle"]) && issetAndNotEmpty($_POST["lastName"]) && issetAndNotEmpty($_POST["firstName"]) && issetAndNotEmpty($_POST["postalCode"])) {
   $title=mysql_real_escape_string($_POST["title"]);
   $lastName=mysql_real_escape_string($_POST["lastName"]);
   $firstName=mysql_real_escape_string($_POST["firstName"]);

@@ -12,7 +12,7 @@ $clients = getClients();
  
 // Cleaning up the term
 $term = trim(strip_tags($_GET['term']));
- 
+
 // Rudimentary search
 $matches = array();
 foreach($clients as $client){

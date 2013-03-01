@@ -9,7 +9,7 @@ $days=array(
                 array("Samedi", "Saturday")
 );
 ?>
-<table class="table table-bordered" id="<?php echo $planning; ?>">
+<table class="table table-bordered planning" id="<?php echo $planning; ?>">
     <thead>
         <tr>
             <th></th>

@@ -58,9 +58,9 @@ if(isset($_POST["login"]) && isset($_POST["password"])) {
         <a class="close" data-dismiss="alert">x</a>  
         <strong>Succes!</strong>  
       </div>
-      <div class="progress progress-striped active">
+      <!--<div class="progress progress-striped active">
         <div class="bar" id="progressBar" style="width: 0%;"></div>
-      </div>
+      </div>-->
       <script  src="assets/js/jquery-1.8.3.js"></script>
       <script type="text/javascript">
         /*var progress = 10;
