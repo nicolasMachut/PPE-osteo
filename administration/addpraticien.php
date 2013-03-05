@@ -11,11 +11,11 @@ $obj_db->db_connect1();
 if(!empty($_POST["inputLastName"]) && !empty($_POST["inputEmail"])) {
     //mail ( $_POST["inputEmail"], "Creation de votre compte OSTEO" , "Bonjour, \n\nVotre mot de passe est ".$_POST['inputPwd'].".\n\nNous vous conseillons de vite le changer pour mieux vous en rappeler.\n\nCordialement.");
     insertPraticien($_POST["inputLastName"],$_POST["inputFirstName"],$_POST["inputEmail"],$_POST["inputGrade"],$_POST["inputPwd"],$_POST["inputTitle"],$_POST["inputCabinet"]);
-    $dates=getDatesFromNow();
+    $dates=getDatesFromDate(date("Y-m-d", strtotime("last Monday")));
     $id=getLastAddedPraticien();
     $id=$id["pra_id"];
-    //browseDateAndHourAndInsertCrenau($dates, $id);
-    //header("location: accueil.php");
+    browseDateAndHourAndInsertCrenau($dates, $id);
+    header("location: accueil.php");
 }
 ?>
 <!DOCTYPE html>

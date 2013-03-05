@@ -110,7 +110,7 @@ function getUserCabinet($login, $pwd)
     }
 }
 
-function isLeapYear($year) // est une ann�e bissextile
+function isLeapYear($year) // est une annŽe bissextile
 {
   return (cal_days_in_month(CAL_GREGORIAN, 2, $year) === 29) ? true : false;
 }
@@ -519,7 +519,7 @@ function getCabinets()
 	return $arr;
 }
 
-function getDatesFromNow()
+function getDatesFromDate($date)
 {
 
 	$res = mysql_query("
@@ -528,7 +528,7 @@ function getDatesFromNow()
                 FROM
                         Date
                 WHERE
-                        dat_date >= CURRENT_DATE()
+                        dat_date >= '".$date."'
                 ORDER BY
                         dat_date DESC
 
@@ -600,4 +600,73 @@ function getLastAddedPraticien() {
 
 	return $arr[0]; // return unique praticien
 }
+
+function getClientById($id, $type)
+{
+	if($type == 1){
+		$res = mysql_query("
+			SELECT
+				cli_nom, cli_prenom, cli_adresse1, cli_adresse2, cli_cp, cli_ville, cli_tel, cli_mail, civ_libelle
+			FROM
+				Client
+			LEFT JOIN
+				Civilité
+			ON
+				Client.civ_id = Civilité.civ_id
+			WHERE
+				cli_id = '".$id."'
+		")or die(mysql_error());
+	} else {
+		$res = mysql_query("
+			SELECT
+				cli_nom, cli_prenom, cli_adresse1, cli_adresse2, cli_cp, cli_ville, cli_tel, cli_mail, civ_id
+			FROM
+				Client
+			WHERE
+				cli_id = '".$id."'
+		")or die(mysql_error());
+	}
+
+	while ($row = mysql_fetch_array($res))
+	{
+		$arr[] = $row;
+	}
+
+	return $arr[0];
+}
+
+function editClientInfo($id, $title, $lastName, $firstName, $adress1, $adress2, $cp, $city, $phone, $mail)
+{
+	//global $database_name;
+	
+		$data_res = mysql_query("
+			UPDATE
+				Client
+			SET
+				cli_nom = '".$lastName."',
+				cli_prenom = '".$firstName."',
+				cli_adresse1 = '".$adress1."',
+				cli_adresse2 = '".$adress2."',
+				cli_cp = '".$cp."',
+				cli_ville = '".$city."',
+				cli_tel = '".$phone."',
+				cli_mail = '".$mail."',
+				civ_id = '".$title."'
+			WHERE
+				cli_id = '".$id."'
+		")or die(mysql_error());
+}
+
+function removeClient($id)
+{
+
+	$res = mysql_query("
+		DELETE FROM
+			Client
+		WHERE
+			cli_id = '".$id."';
+	")or die(mysql_error());
+
+}
+
 ?>

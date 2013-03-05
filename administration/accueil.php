@@ -137,7 +137,7 @@ $dateEndWeek=strtotime('sunday this week', $dateBeginWeek);
                 <span class="moreInfosSpan">Prenom :</span>
                 <div class="moreInfos">
                     <span class="moreInfosSpan">Adresse :</span>
-                    <span class="moreInfosSpan">Adresse :</span>
+                    <span class="moreInfosSpan">Complement :</span>
                     <span class="moreInfosSpan">Code postal :</span>
                     <span class="moreInfosSpan">Ville :</span>
                     <span class="moreInfosSpan">Telephone :</span>
@@ -320,13 +320,13 @@ $dateEndWeek=strtotime('sunday this week', $dateBeginWeek);
             $('.close').trigger("click");
         });
         
-        $(".telephone").keyup(function (){
-            alert("hey");
-            //$(this).val(function(i, text) {
-            //text = text.replace(/(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})/, "$1.$2.$3.$4.$5");
-            //return text;
-            //});            
-        });
+        //$(".telephone").keyup(function (){
+        //    alert("hey");
+        //    //$(this).val(function(i, text) {
+        //    //text = text.replace(/(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})/, "$1.$2.$3.$4.$5");
+        //    //return text;
+        //    //});            
+        //});
     </script>
   </body>
 <?php

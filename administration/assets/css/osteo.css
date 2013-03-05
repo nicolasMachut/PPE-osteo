@@ -35,7 +35,7 @@ body {
     padding-top: 20px;
 }
 
-.table tbody tr td:hover {
+.planning tbody tr td:hover {
     background-color: silver;
 }
 
@@ -94,7 +94,7 @@ body {
 
 #submitMoreInfos {
     float: left;
-    width: 250px;
+    width: 200px;
 }
 
 #moreInfosForm {
@@ -103,4 +103,8 @@ body {
 
 #headNav li a{
     font-size: 14px;
+}
+
+.client td img {
+    width: 16px;
 }

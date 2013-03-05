@@ -8,7 +8,7 @@ require_once(ABSPATH.'inc/checklogin.php');
 
 $obj_db->db_connect1();
 if(isset($_POST["inputTitle"]) && issetAndNotEmpty($_POST["lastName"]) && issetAndNotEmpty($_POST["firstName"]) && issetAndNotEmpty($_POST["postalCode"])) {
-  $title=mysql_real_escape_string($_POST["title"]);
+  $title=mysql_real_escape_string($_POST["inputTitle"]);
   $lastName=mysql_real_escape_string($_POST["lastName"]);
   $firstName=mysql_real_escape_string($_POST["firstName"]);
   $postalCode=mysql_real_escape_string($_POST["postalCode"]);
