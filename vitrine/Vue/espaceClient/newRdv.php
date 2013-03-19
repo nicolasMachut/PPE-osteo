@@ -154,6 +154,14 @@
 		$('#afficherSucces').show();
 		supprimerValidation();
 	}
+
+	function supprimerCrenaux(date, heure)
+	{
+		$.post('../../Controlleur/espaceClient/supprimerCrenauxSalle.php?date='+date+'&heure='+heure+'', '' , function(data, textStatus) {});
+		$.post('../../Vue/espaceClient/listeProchainCrenaux.php', '', function(data){
+			$('#listeProchainCrenaux').html(data);
+			});
+	}
 	
 	</script>
 

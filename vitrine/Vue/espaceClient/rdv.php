@@ -8,22 +8,7 @@
 	}
 	else
 	{
-		echo'<h5>Mes prochains Rendez-vous : </h5>';
-		echo'<table class="table table-hover table-bordered">';
-		echo'<th style="text-align:center";>Date</th><th style="text-align:center";>Heure</th><th style="text-align:center";>Cabinet</th><th style="text-align:center";>Praticien</th><th style="text-align:center";>Supprimer</th>';
-		foreach( $rdv AS $r )
-		{
-			if( $date <= $r['dat_date'] )
-			{
-				echo'<tr><td style="text-align:center";>'.convertionDate($r['dat_date']).'</td><td style="text-align:center";>'.substr($r['heu_heures'], 0, 5).'</td><td style="text-align:center";><a href="../espacePublic/details.php?cab='.$r['cab_nom'].'">'.$r['cab_nom'].'</a></td><td style="text-align:center";><a href="../espacePublic/details.php?cab='.$r['cab_nom'].'">'.$r['pra_nom'].'</a></td>';
-				if(verifierDelaisSuppression($r['dat_date']))
-					echo'<td style="text-align:center";><b><a href="../../Controlleur/espaceClient/supprimerCrenauxPraticien.php?id='.$r['cre_id'].'"><i class="icon-trash"></i> Supprimer</a></b></td>';
-				else
-					echo'<td style="text-align:center"; class="alert warning-alert"><b><i class="icon-lock"></i> Un rendez-vous doit etre annulé au minimum 48h à l\'avance</b></td>';
-				echo'</tr>';
-			}
-		}
-		echo'</table></br>';
+		echo'<div id="listeProchainCrenauxPraticien"></div>';
 		
 		echo'<h5>Historique des Rendez-vous : </h5>';
 		echo'<table class="table table-striped table-bordered">';
@@ -35,6 +20,23 @@
 		}
 		echo'</table>';
 	}
-
-
+?>
+	<script src="../../Vue/assets/js/jquery-1.8.3.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+	
+	
+	<script>
+	$(document).ready(function(){
+		$.post('../../Vue/espaceClient/listeProchainCrenauxPraticien.php', '', function(data){
+			$('#listeProchainCrenauxPraticien').html(data);
+			});
+	});
+		function supprimerCrenauxPraticien( creId )
+		{
+			$.post('../../Controlleur/espaceClient/supprimerCrenauxPraticien.php?id='+creId+'', '' , function(data, textStatus) {});
+			$.post('../../Vue/espaceClient/listeProchainCrenauxPraticien.php', '', function(data){
+				$('#listeProchainCrenauxPraticien').html(data);
+				});
+		}
+	</script>
 
