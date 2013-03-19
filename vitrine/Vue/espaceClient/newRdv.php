@@ -54,7 +54,7 @@
 										if(empecherDoubleRdv($_POST['date1'], $heu['heu_heures'], $_SESSION['id']))
 										{
 											?>
-												<td class = "alert alert-success" onClick="afficherValidation('<?php echo substr($heu['heu_heures'], 0, 5);?>','<?php echo $_SESSION['id'];?>','<?php echo $sal['sal_id']?>', '<?php echo convertionDate($_POST['date1']);?>')" style="text-align:center";><?php echo $nbPersInscrit." / ".$nbPersMax;?></td>
+												<td class = "alert alert-success" onClick="afficherValidation('<?php echo substr($heu['heu_heures'], 0, 5);?>','<?php echo $_SESSION['id'];?>','<?php echo $sal['sal_id']?>', '<?php echo convertionDate($_POST['date1']);?>','<?php echo $_POST['date1'];?>')" style="text-align:center";><?php echo $nbPersInscrit." / ".$nbPersMax;?></td>
 											<?php 
 										}
 										else
@@ -163,7 +163,7 @@
 
 <script>
 
-	function afficherValidation(heure, idClient, salle, date)
+	function afficherValidation(heure, idClient, salle, date, dateNonConvertis)
 	{
 		supprimerValidation();
 		
@@ -183,7 +183,7 @@
 		var newLinkConfirm = document.createElement('a');
 		newLinkConfirm.id = 'aConfirm';
 		
-		newLinkConfirm.setAttribute('onClick','confirmerCrenaux()');
+		newLinkConfirm.addEventListener('click', function(){confirmerCrenaux(date, heure, salle, idClient, dateNonConvertis);}, false);
 		var newLinkConfirmText = document.createTextNode('Confirmer ');
 
 		//création lien annulation
@@ -225,9 +225,10 @@
 		}
 	}
 
-	function confirmerCrenaux(date, heure, salle, idClient)
+	function confirmerCrenaux(date, heure, salle, idClient, dateNonConvertis)
 	{
-		$.post("../../Modele/espaceClient/reserverCrenauxSalle.php?date="+date+"&heure="+heure+"&salle="+salle+"&idClient="+idClient, ' ', function(data, textStatus) {alert(data);});
+		alert(dateNonConvertis);
+		$.post("../../Modele/espaceClient/reserverCrenauxSalle.php?date="+dateNonConvertis+"&heure="+heure+"&salle="+salle+"&idClient="+idClient, ' ', function(data, textStatus) {alert(data);});
 		//Affiche du message html pour montrer que le rdv a ete reserve
 		//<div class="alert alert-success">
 		//	<button type="button" class="close" data-dismiss="alert">&times;</button>
