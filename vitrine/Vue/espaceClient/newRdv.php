@@ -161,6 +161,10 @@
 		$.post('../../Vue/espaceClient/listeProchainCrenaux.php', '', function(data){
 			$('#listeProchainCrenaux').html(data);
 			});
+		var dataToBeSent = $('#formCrenaux').serialize();
+		$.post('../../Vue/espaceClient/planningSalle.php', dataToBeSent, function(data, textStatus){
+			$('#planning').html(data);
+		});
 	}
 	
 	</script>
