@@ -2,15 +2,23 @@
 
 	require_once'../../Controlleur/conf/connexionBDD.php';
 	global $bdd;
-	$reponse = $bdd -> query('
-			INSERT INTO PrendRDV (sal_id, dat_date, heu_heures, cli_id)
-			VALUE("'.$salle.'", "'.$date.'", "'.$heure.'", "'.$idClient.'");
-			');
+	if( isset($_REQUEST['date']) && isset($_REQUEST['salle']) && isset($_REQUEST['heure']) && isset($_REQUEST['idClient']) )
+	{
+		$date = $_REQUEST['date'];
+		$salle = $_REQUEST['salle'];
+		$heure = $_REQUEST['heure'];
+		$idClient = $_REQUEST['idClient'];
+		
+		$reponse = $bdd -> query('
+		 INSERT INTO PrendRDV (sal_id, dat_date, heu_heures, cli_id)
+				VALUE("'.$salle.'", "'.$date.'", "'.$heure.'", "'.$idClient.'");
+				');
+		
+	}
+
 	
-	echo $_REQUEST['date'];
-	//echo $_REQUEST['heure'];
-	//echo $_REQUEST['idClient'];
-	//echo $_REQUEST['salle'];
+
+	
 	
 	/*function verifierDoubleRdv($idClient, $date, $heure)
 	{

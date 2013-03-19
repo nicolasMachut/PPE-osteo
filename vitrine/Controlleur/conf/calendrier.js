@@ -152,7 +152,7 @@ function ds_draw_calendar(m, y) {
 	
 	ds_echo (ds_template_main_below()); // Do the footer
 	ds_ob_flush();                      // And let's display..
-	ds_ce.scrollIntoView();             // Scroll it into view.
+	//ds_ce.scrollIntoView();             // Scroll it into view.
 }
 
 // A function to show the calendar.
@@ -174,7 +174,7 @@ function ds_sh(t) {
 	ds_ce.style.left = the_left + 'px';
 	ds_ce.style.top = the_top + 'px';
 	// Scroll it into view.
-	ds_ce.scrollIntoView();
+	//ds_ce.scrollIntoView();
 }
 
 // Hide the calendar.
@@ -235,7 +235,7 @@ function ds_onclick(d, m, y) {
 	
 	if (typeof(ds_element.value) != 'undefined') {
 		// Set the value of it, if we can.
-		ds_element.value = ds_format_date(y, m, d);
+		ds_element.value = ds_format_date(y, m, d);$(ds_element).trigger('change');
 	}
 	else if (typeof(ds_element.innerHTML) != 'undefined') {
 		// Maybe we want to set the HTML in it.

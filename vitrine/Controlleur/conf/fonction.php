@@ -77,7 +77,7 @@ require_once'../../Modele/espaceClient/reserverCrenauxSalle.php';
 					<div class="alert alert-error">
 						<button type="button" class="close" data-dismiss="alert">&times;</button>
 						<p>Aucun compte n\'existe avec cette combinaison mot de passe / courriel. Vous pouvez contacter l\'un des cabinet pour vous créer un compte.</p>
-				</div>
+					</div>
 				';
 			break;
 			case 2 : 
