@@ -7,7 +7,7 @@
 ?>
 <body>
 	<div class="container">
-		<h3 align="center">Cabinet Osteo <?php echo $cab[cab_nom];?></h3>
+		<h3 align="center">Cabinet Osteo <?php echo $cab['cab_nom'];?></h3>
 		<div class="alert alert-info">
 	   		<table class="table">
 				<tr>
@@ -52,10 +52,10 @@
 			    $praticien = detailPraticien($_REQUEST['cab']);
 			    foreach( $praticien AS $pra )
 			    {
-			    	echo'<tr><td><img src="../../Vue/images/praticien/'.$pra[pra_nom].'.jpg" width="100" class="img-polaroid"></td>
+			    	echo'<tr><td><img src="../../Vue/images/praticien/'.$pra['pra_nom'].'.jpg" width="100" class="img-polaroid"></td>
 						<td>
-							<p>'.$pra[pra_nom].' '.$pra[pra_prenom].'</p>';
-			    	switch( $pra[pra_grade] )
+							<p>'.$pra['pra_nom'].' '.$pra['pra_prenom'].'</p>';
+			    	switch( $pra['pra_grade'] )
 			    	{
 			    		case 1 : echo'<p>Directeur</p>
 									  <p>Responsable de cabinet</p>'		

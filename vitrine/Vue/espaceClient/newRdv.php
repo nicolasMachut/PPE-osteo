@@ -40,12 +40,7 @@
 
 	require_once'../../Modele/espaceClient/voirRdvSal.php';
 	$rdv = voirRdvSal($_SESSION['id']);
-	if($rdv == NULL)
-	{
-		echo'<h5>Vous n\'avez encore jamais réservé de crénaux dans l\'une de nos salles, contactez l\'un de nos cabinet ou utilisez le formulaire ci-dessus afin de réserver un crénaux.</h5>';
-	}
-	else
-	{
+
 		?>
 		<div id="listeProchainCrenaux">
 		
@@ -67,7 +62,7 @@
 					</tr>';
 			}
 		}
-	}
+	
 	?>
 </table>
 	<script src="../../Vue/assets/js/jquery-1.8.3.js"></script>

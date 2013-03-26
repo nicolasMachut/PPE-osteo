@@ -29,4 +29,7 @@ foreach($rdv AS $r)
 		echo'</tr>';
 	}
 }
+
 echo '</table></br>';
+
+
