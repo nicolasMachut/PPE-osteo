@@ -9,11 +9,12 @@
 <?php 
 $date = date('Y-m-d');
 $rdv = voirRdvSal($_SESSION['id']);
-foreach($rdv AS $r)
+foreach( $rdv AS $r )
 {
+	//echo $r['dat_date'].'</br>';
 	if($date <= $r['dat_date'])
 	{
-		$afficherDateRdv = convertionDate($r["dat_date"]);
+		/*$afficherDateRdv = convertionDate($r["dat_date"]);
 		echo'<tr>';
 		echo'<td style="text-align:center";>'.$afficherDateRdv.'</td><td style="text-align:center";>'.substr($r['heu_heures'], 0, 5).'</td>';
 		echo'<td style="text-align:center";><a href="../espacePublic/details.php?cab='.$r['cab_nom'].'">'.$r['cab_nom'].'</a></td>';
@@ -26,9 +27,10 @@ foreach($rdv AS $r)
 		}
 		else
 			echo'<td class="alert alert-warning" style="text-align:center";><b><i class="icon-lock"></i> Un rendez-vous doit etre supprimé au minimum 48h à l\'avance</b></td>';
-		echo'</tr>';
+		echo'</tr>';*/
 	}
 }
+
 
 echo '</table></br>';
 

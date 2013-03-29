@@ -29,7 +29,7 @@ require_once'../../Modele/espaceClient/voirRdvSal.php';
 					{
 						if(voirCrenauxDispo($_POST['date1'],$heu['heu_heures'], $sal["sal_id"]))//verifie si la salle est pleine, si elle n'est pas pleine on affiche en vert
 						{
-							if(verificationJourOuverture($_POST['date1']))
+							if(verificationJourOuverture($_POST['date1'], $sal['sal_id']))
 							{
 								if(empecherDoubleRdv($_POST['date1'], $heu['heu_heures'], $_SESSION['id']))
 								{
@@ -72,5 +72,4 @@ require_once'../../Modele/espaceClient/voirRdvSal.php';
 
 	
 		</table>
-	</form>
 </div>

@@ -129,8 +129,11 @@ require_once'../../Modele/espaceClient/reserverCrenauxSalle.php';
 	//-------------------------------------------------------------------------------
 
 	
-	function verificationJourOuverture( $date ) // Verifie que le jour choisis par le client n'est pas un dimanche
+	function verificationJourOuverture( $date, $salle ) // Verifie que le jour choisis par le client n'est pas un dimanche
 	{
+		if( verifierJourFermeture( $date, $salle ) )
+			return false;
+		else
 		$timestamp = strtotime($date);
 		$jour = date('l', $timestamp);
 		if( $jour == "Sunday" )
@@ -146,7 +149,7 @@ require_once'../../Modele/espaceClient/reserverCrenauxSalle.php';
 		if($dateDay < $date)
 			return true;//Le jour n'est pas passé on peut prendre rdv
 		elseif( $dateDay > $date )
-		return false;//le jour est passé, impossible de prendre rdv
+			return false;//le jour est passé, impossible de prendre rdv
 		elseif( $dateDay == $date )
 		{
 			$heureNow =  date('H:i:s');

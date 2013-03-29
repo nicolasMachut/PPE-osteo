@@ -3,7 +3,9 @@
 
 	function voirRdvSal ( $id )// renvoie les rdv en salle d'un client en fonction de son identifiant
 	{
-		$rdv = array();
+		$date = date('Y-m-d');
+		$ancienRdv = array();
+		$prochainRdv = array();
 		global $bdd;
 		$reponse = $bdd -> query('
 		SELECT dat_date, heu_heures, PrendRDV.sal_id, cab_nom, PrendRDV.sal_id
@@ -15,15 +17,24 @@
 		');
 			while( $donnee = $reponse -> fetch() )
 			{
-				$rdv[] = $donnee;
+				if($date > $donnee['dat_date'])
+					$ancienRdv[] = $donnee;
+				else 
+					$prochainRdv[] = $donnee;
 			}
-			return $rdv;
+			echo var_dump($ancienRdv).'</br>';
+			foreach( $ancienRdv as $an )
+			{
+				
+			}
+			//return $rdv;
 	}
 	
 	//-------------------------------------------------------------------------------
 	
 	function getSalle( $cab ) // renvoie l'id des salles d'un cabinet en fonction de l'identifiant du cabinet
 	{
+		
 		$salle = array();
 		global $bdd;
 		$reponse = $bdd -> query('
@@ -126,9 +137,7 @@
 					SELECT * FROM Date WHERE dat_date = "'.$date.'"
 				');
 		if( $donnee = $reponse -> fetch() )
-		{
 			return true;
-		}
 		else
 		{
 			$ajouter = $bdd -> query('
@@ -138,4 +147,20 @@
 		}
 	}
 
+	//---------------------------------------------------------------------------------
+
+	function verifierJourFermeture( $date, $salle ) //Vérifie si le jour a afficher, la salle en question est ouverte
+	//Une salle peut etre fermé ou le jour est un dimanche ou le cabinet est entierement fermé pour raison X
+	{
+		global $bdd;
+		$reponse = $bdd -> query('
+					SELECT * FROM DispoSalle
+					WHERE sal_id = "'.$salle.'" AND dat_date = "'.$date.'"
+				');
+		if( $donnee = $reponse -> fetch() )
+			return true;
+		else
+			return false;
+	}
+	
 	

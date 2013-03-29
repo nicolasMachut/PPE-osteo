@@ -27,6 +27,7 @@
 			<th id="crenauxTable"></th>
 		</table>
 	</div>
+	</form>
 </div>
 
 <div id="confirmation" class="alert alert-warning" style="display : none;"></div>

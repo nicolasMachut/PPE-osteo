@@ -23,5 +23,3 @@
 			$_SESSION['afficher'] = 1;
 			header('location:../../Controlleur/espacePublic/index.php?er=0');
 		}
-
-//test
