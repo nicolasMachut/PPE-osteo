@@ -129,7 +129,7 @@ require_once'../../Modele/espaceClient/reserverCrenauxSalle.php';
 	//-------------------------------------------------------------------------------
 
 	
-	function verificationJourOuverture( $date, $salle ) // Verifie que le jour choisis par le client n'est pas un dimanche
+	function verificationJourOuverture( $date, $salle ) // Verifie que le jour choisis par le client n'est pas un dimanche ou un jour fermé
 	{
 		if( verifierJourFermeture( $date, $salle ) )
 			return false;

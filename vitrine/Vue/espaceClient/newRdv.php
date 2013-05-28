@@ -1,4 +1,5 @@
 <?php 
+session_start();
 	require_once'../../Controlleur/conf/fonction.php';
 	require_once'../../Modele/espaceClient/voirRdvSal.php';
 	if( empty($_POST['date1']) )

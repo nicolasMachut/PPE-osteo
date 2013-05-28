@@ -17,17 +17,9 @@
 		');
 			while( $donnee = $reponse -> fetch() )
 			{
-				if($date > $donnee['dat_date'])
-					$ancienRdv[] = $donnee;
-				else 
-					$prochainRdv[] = $donnee;
+					$rdv[] = $donnee;
 			}
-			echo var_dump($ancienRdv).'</br>';
-			foreach( $ancienRdv as $an )
-			{
-				
-			}
-			//return $rdv;
+			return $rdv;
 	}
 	
 	//-------------------------------------------------------------------------------
