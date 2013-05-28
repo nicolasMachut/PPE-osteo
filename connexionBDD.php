@@ -9,4 +9,4 @@
 	{
 		die('Erreur : ' . $e->getMessage());
 	}
-test
+test2
